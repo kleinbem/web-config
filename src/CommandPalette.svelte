@@ -47,9 +47,8 @@
 		const previous = /** @type {HTMLElement | null} */ (document.activeElement);
 		query = '';
 		selectedIndex = 0;
-		const timer = setTimeout(() => inputEl?.focus(), 50);
+		inputEl?.focus();
 		return () => {
-			clearTimeout(timer);
 			previous?.focus?.();
 		};
 	});

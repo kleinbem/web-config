@@ -50,7 +50,7 @@ export default defineWebConfig({
 ```css
 @import "tailwindcss";
 
-/* Scan web-config components for Tailwind utilities */
+/* Scan web-config components for Tailwind utilities (path relative to src/app.css) */
 @source "../node_modules/@kleinbem/web-config";
 
 /* Adaptive theme supporting system preference + toggle (or lock via /theme/dark or /theme/light) */

@@ -50,7 +50,7 @@
 			case 'down':
 				return 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]';
 			case 'checking':
-				return 'bg-sky-500 shadow-[0_0_8px_rgba(14,165,233,0.5)] animate-pulse';
+				return 'bg-sky-500 shadow-[0_0_8px_rgba(14,165,233,0.5)] motion-safe:animate-pulse';
 			default:
 				return 'bg-zinc-400/60 dark:bg-zinc-600/60';
 		}
@@ -65,7 +65,7 @@
 	{...restProps}
 >
 	<span
-		class={`rounded-full transition-colors shrink-0 ${sizeClass} ${colorClass} ${pulse || status === 'checking' ? 'animate-pulse' : ''}`}
+		class={`rounded-full transition-colors shrink-0 ${sizeClass} ${colorClass} ${pulse || status === 'checking' ? 'motion-safe:animate-pulse' : ''}`}
 	></span>
 	<span class="sr-only">{statusLabel}</span>
 </div>
