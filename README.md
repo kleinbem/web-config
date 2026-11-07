@@ -125,3 +125,38 @@ theme.toggle();                // toggles active theme
 theme.cycle();                 // cycles preference
 theme.set('system');           // sets explicit preference
 ```
+
+### 6. Font Size Switcher (`<FontSizeToggle />`)
+
+Accessibility typography control supporting proportional `rem` font scaling across the fleet:
+
+```svelte
+<script>
+  import FontSizeToggle from '@kleinbem/web-config/font-size/toggle';
+</script>
+
+<!-- Sleek single 'A' button: cycles Normal (100%) -> Large (112.5%) -> Extra Large (125%) -->
+<FontSizeToggle />
+
+<!-- Optional segmented control -->
+<FontSizeToggle variant="segmented" showLabel />
+```
+
+Zero-FOUC init script for `src/app.html`:
+```html
+<script>
+  try {
+    const s = localStorage.getItem('fleet-font-size');
+    if (s && s !== 'normal') document.documentElement.dataset.fontSize = s;
+  } catch (e) {}
+</script>
+```
+
+Or access the reactive font size controller:
+```typescript
+import { fontSize } from '@kleinbem/web-config/font-size/state';
+
+console.log(fontSize.current); // 'normal' | 'large' | 'larger'
+fontSize.cycle();              // cycles font size
+fontSize.set('large');         // sets explicit size
+```
