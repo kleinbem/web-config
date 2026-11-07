@@ -50,12 +50,45 @@ export default defineWebConfig({
 ```css
 @import "tailwindcss";
 
-/* Choose adaptive theme or lock to dark/light */
-@import "@kleinbem/web-config/theme/dark"; /* Developer dark mode (revue, nix-detour) */
-/* or: @import "@kleinbem/web-config/theme/light"; (kleinbem-site) */
+/* Adaptive theme supporting system preference + toggle (or lock via /theme/dark or /theme/light) */
+@import "@kleinbem/web-config/theme";
 
 /* Universal resets, status badges, and prose markdown styles */
 @import "@kleinbem/web-config/base.css";
 @import "@kleinbem/web-config/badges.css";
 @import "@kleinbem/web-config/prose.css";
+```
+
+### 4. Theme Switcher (`<ThemeToggle />`)
+
+Modeled after `svelte.dev` with support for system preferences, zero-FOUC SSR, and cross-tab sync:
+
+```svelte
+<script>
+  import ThemeToggle from '@kleinbem/web-config/theme/toggle';
+</script>
+
+<!-- Sleek single button: toggles dark/light & auto-reverts to system -->
+<ThemeToggle />
+
+<!-- Optional 3-way cycle (System -> Light -> Dark) -->
+<ThemeToggle variant="cycle" />
+
+<!-- Optional segmented control -->
+<ThemeToggle variant="segmented" showLabel />
+```
+
+Or access the reactive theme controller directly:
+
+```typescript
+import { theme } from '@kleinbem/web-config/theme/state';
+
+// Reactively inspect or mutate:
+console.log(theme.preference); // 'system' | 'light' | 'dark'
+console.log(theme.system);     // 'dark' | 'light'
+console.log(theme.current);    // 'dark' | 'light' (resolved)
+
+theme.toggle();                // toggles active theme
+theme.cycle();                 // cycles preference
+theme.set('system');           // sets explicit preference
 ```
