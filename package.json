@@ -15,7 +15,14 @@
       "default": "./src/vite.js"
     },
     "./tsconfig.json": "./tsconfig.base.json",
-    "./tsconfig/svelte": "./tsconfig.svelte.json"
+    "./tsconfig/svelte": "./tsconfig.svelte.json",
+    "./theme": "./src/theme.css",
+    "./theme/dark": "./src/theme-dark.css",
+    "./theme/light": "./src/theme-light.css",
+    "./styles.css": "./src/styles.css",
+    "./base.css": "./src/base.css",
+    "./badges.css": "./src/badges.css",
+    "./prose.css": "./src/prose.css"
   },
   "scripts": {
     "check": "node --check src/index.js src/vite.js"

@@ -44,3 +44,18 @@ export default defineWebConfig({
   "extends": "@kleinbem/web-config/tsconfig/svelte"
 }
 ```
+
+### 3. Shared Theme & Styles (`app.css`)
+
+```css
+@import "tailwindcss";
+
+/* Choose adaptive theme or lock to dark/light */
+@import "@kleinbem/web-config/theme/dark"; /* Developer dark mode (revue, nix-detour) */
+/* or: @import "@kleinbem/web-config/theme/light"; (kleinbem-site) */
+
+/* Universal resets, status badges, and prose markdown styles */
+@import "@kleinbem/web-config/base.css";
+@import "@kleinbem/web-config/badges.css";
+@import "@kleinbem/web-config/prose.css";
+```
