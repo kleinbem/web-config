@@ -50,6 +50,9 @@ export default defineWebConfig({
 ```css
 @import "tailwindcss";
 
+/* Scan web-config components for Tailwind utilities (path relative to src/app.css) */
+@source "../node_modules/@kleinbem/web-config";
+
 /* Adaptive theme supporting system preference + toggle (or lock via /theme/dark or /theme/light) */
 @import "@kleinbem/web-config/theme";
 
@@ -159,4 +162,49 @@ import { fontSize } from '@kleinbem/web-config/font-size/state';
 console.log(fontSize.current); // 'normal' | 'large' | 'larger'
 fontSize.cycle();              // cycles font size
 fontSize.set('large');         // sets explicit size
+```
+
+### 7. Live Status Indicator (`<StatusDot />`)
+
+Fleet-standard operational health indicator for services, daemons, and nodes:
+
+```svelte
+<script>
+  import StatusDot from '@kleinbem/web-config/components/StatusDot';
+</script>
+
+<StatusDot status="healthy" pulse />
+<StatusDot status="degraded" size="sm" />
+<StatusDot status="down" />
+```
+
+### 8. Command Palette (`<CommandPalette />`)
+
+Keyboard-first `⌘K` / `/` modal navigation for services, actions, and routes:
+
+```svelte
+<script>
+  import CommandPalette from '@kleinbem/web-config/components/CommandPalette';
+
+  let open = $state(false);
+
+  const items = [
+    {
+      id: 'foyer',
+      title: 'Foyer',
+      subtitle: 'Homelab service launchpad',
+      category: 'Portal',
+      icon: '🏠',
+      url: 'https://home.kleinbem.dev'
+    },
+    {
+      id: 'reload',
+      title: 'Refresh Data',
+      category: 'Actions',
+      onSelect: () => refresh()
+    }
+  ];
+</script>
+
+<CommandPalette {items} bind:open />
 ```
