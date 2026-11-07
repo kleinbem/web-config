@@ -47,6 +47,16 @@
       "types": "./src/initFontSize.d.ts",
       "default": "./src/initFontSize.js"
     },
+    "./components/StatusDot": {
+      "types": "./src/StatusDot.svelte.d.ts",
+      "svelte": "./src/StatusDot.svelte",
+      "default": "./src/StatusDot.svelte"
+    },
+    "./components/CommandPalette": {
+      "types": "./src/CommandPalette.svelte.d.ts",
+      "svelte": "./src/CommandPalette.svelte",
+      "default": "./src/CommandPalette.svelte"
+    },
     "./styles.css": "./src/styles.css",
     "./base.css": "./src/base.css",
     "./badges.css": "./src/badges.css",
