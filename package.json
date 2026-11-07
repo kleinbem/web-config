@@ -1,0 +1,39 @@
+{
+  "name": "@kleinbem/web-config",
+  "version": "0.1.0",
+  "description": "Shared cutting-edge SvelteKit, Vite, and Tailwind configuration for the kleinbem fleet",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./vite": {
+      "types": "./src/vite.d.ts",
+      "default": "./src/vite.js"
+    },
+    "./tsconfig.json": "./tsconfig.base.json",
+    "./tsconfig/svelte": "./tsconfig.svelte.json"
+  },
+  "scripts": {
+    "check": "node --check src/index.js src/vite.js"
+  },
+  "peerDependencies": {
+    "@sveltejs/adapter-static": "^3.0.0 || ^4.0.0",
+    "@sveltejs/kit": "^3.1.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "svelte": "^5.36.0",
+    "tailwindcss": "^4.0.0",
+    "vite": "^8.0.0"
+  },
+  "files": [
+    "src",
+    "tsconfig.base.json",
+    "tsconfig.svelte.json",
+    "README.md"
+  ],
+  "author": "Martin Kleinberger <martin.kleinberger@gmail.com>",
+  "license": "MIT"
+}
