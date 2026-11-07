@@ -43,11 +43,15 @@
 	});
 
 	$effect(() => {
-		if (open) {
-			query = '';
-			selectedIndex = 0;
-			setTimeout(() => inputEl?.focus(), 50);
-		}
+		if (!open) return;
+		const previous = /** @type {HTMLElement | null} */ (document.activeElement);
+		query = '';
+		selectedIndex = 0;
+		const timer = setTimeout(() => inputEl?.focus(), 50);
+		return () => {
+			clearTimeout(timer);
+			previous?.focus?.();
+		};
 	});
 
 	$effect(() => {

@@ -65,7 +65,7 @@
 	{...restProps}
 >
 	<span
-		class={`rounded-full transition-colors shrink-0 ${sizeClass} ${colorClass} ${pulse && status === 'healthy' ? 'animate-pulse' : ''}`}
+		class={`rounded-full transition-colors shrink-0 ${sizeClass} ${colorClass} ${pulse || status === 'checking' ? 'animate-pulse' : ''}`}
 	></span>
 	<span class="sr-only">{statusLabel}</span>
 </div>
