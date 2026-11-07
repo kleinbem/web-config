@@ -33,13 +33,27 @@
       "types": "./src/initTheme.d.ts",
       "default": "./src/initTheme.js"
     },
+    "./font-size/toggle": {
+      "types": "./src/FontSizeToggle.svelte.d.ts",
+      "svelte": "./src/FontSizeToggle.svelte",
+      "default": "./src/FontSizeToggle.svelte"
+    },
+    "./font-size/state": {
+      "types": "./src/fontSize.svelte.d.ts",
+      "svelte": "./src/fontSize.svelte.js",
+      "default": "./src/fontSize.svelte.js"
+    },
+    "./font-size/init": {
+      "types": "./src/initFontSize.d.ts",
+      "default": "./src/initFontSize.js"
+    },
     "./styles.css": "./src/styles.css",
     "./base.css": "./src/base.css",
     "./badges.css": "./src/badges.css",
     "./prose.css": "./src/prose.css"
   },
   "scripts": {
-    "check": "for f in src/index.js src/vite.js src/initTheme.js; do node --check \"$f\" || exit 1; done"
+    "check": "for f in src/index.js src/vite.js src/initTheme.js src/initFontSize.js; do node --check \"$f\" || exit 1; done"
   },
   "peerDependencies": {
     "@sveltejs/adapter-static": "^3.0.0 || ^4.0.0",

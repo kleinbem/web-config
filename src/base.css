@@ -8,6 +8,31 @@
     color: var(--color-fg);
   }
 
+  /* Font size / typography scaling */
+  :root[data-font-size="small"],
+  html[data-font-size="small"],
+  .font-size-small {
+    font-size: 87.5%;
+  }
+
+  :root[data-font-size="normal"],
+  html[data-font-size="normal"],
+  .font-size-normal {
+    font-size: 100%;
+  }
+
+  :root[data-font-size="large"],
+  html[data-font-size="large"],
+  .font-size-large {
+    font-size: 112.5%;
+  }
+
+  :root[data-font-size="larger"],
+  html[data-font-size="larger"],
+  .font-size-larger {
+    font-size: 125%;
+  }
+
   code, kbd, samp, pre {
     font-family: var(--font-mono);
   }
