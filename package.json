@@ -19,13 +19,27 @@
     "./theme": "./src/theme.css",
     "./theme/dark": "./src/theme-dark.css",
     "./theme/light": "./src/theme-light.css",
+    "./theme/toggle": {
+      "types": "./src/ThemeToggle.svelte.d.ts",
+      "svelte": "./src/ThemeToggle.svelte",
+      "default": "./src/ThemeToggle.svelte"
+    },
+    "./theme/state": {
+      "types": "./src/theme.svelte.d.ts",
+      "svelte": "./src/theme.svelte.js",
+      "default": "./src/theme.svelte.js"
+    },
+    "./theme/init": {
+      "types": "./src/initTheme.d.ts",
+      "default": "./src/initTheme.js"
+    },
     "./styles.css": "./src/styles.css",
     "./base.css": "./src/base.css",
     "./badges.css": "./src/badges.css",
     "./prose.css": "./src/prose.css"
   },
   "scripts": {
-    "check": "node --check src/index.js src/vite.js"
+    "check": "for f in src/index.js src/vite.js src/initTheme.js; do node --check \"$f\" || exit 1; done"
   },
   "peerDependencies": {
     "@sveltejs/adapter-static": "^3.0.0 || ^4.0.0",
