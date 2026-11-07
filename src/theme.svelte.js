@@ -24,7 +24,7 @@ class Persisted {
 	#subscribe = createSubscriber((update) => {
 		if (typeof window === 'undefined') return () => {};
 		return on(window, 'storage', (e) => {
-			if (e.key === this.#key) {
+			if (e.key === null || e.key === this.#key) {
 				update();
 			}
 		});

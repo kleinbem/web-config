@@ -5,7 +5,6 @@
   "type": "module",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
-  "svelte": "./src/ThemeToggle.svelte",
   "exports": {
     ".": {
       "types": "./src/index.d.ts",
@@ -40,7 +39,7 @@
     "./prose.css": "./src/prose.css"
   },
   "scripts": {
-    "check": "node --check src/index.js src/vite.js src/initTheme.js"
+    "check": "for f in src/index.js src/vite.js src/initTheme.js; do node --check \"$f\" || exit 1; done"
   },
   "peerDependencies": {
     "@sveltejs/adapter-static": "^3.0.0 || ^4.0.0",

@@ -53,19 +53,6 @@
 	});
 </script>
 
-<svelte:head>
-	<script>
-		try {
-			const p = localStorage.getItem('fleet-theme');
-			const m = window.matchMedia('(prefers-color-scheme: dark)').matches;
-			const t = (!p || p === 'system') ? (m ? 'dark' : 'light') : p;
-			document.documentElement.dataset.theme = t;
-			document.documentElement.classList.toggle('dark', t === 'dark');
-			document.documentElement.classList.toggle('light', t === 'light');
-		} catch (e) {}
-	</script>
-</svelte:head>
-
 {#snippet sunIcon()}
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
@@ -166,7 +153,6 @@
 		onclick={handleToggleClick}
 		aria-label={toggleAriaLabel}
 		title={toggleTitle}
-		aria-pressed={isDark}
 		class="inline-flex items-center justify-center gap-1.5 rounded-lg border border-line bg-surface hover:bg-surface-high text-fg hover:text-heading p-2 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent {className}"
 		{...restProps}
 	>

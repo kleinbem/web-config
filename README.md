@@ -59,9 +59,42 @@ export default defineWebConfig({
 @import "@kleinbem/web-config/prose.css";
 ```
 
-### 4. Theme Switcher (`<ThemeToggle />`)
+### 4. Zero-FOUC Initialization (`app.html`)
 
-Modeled after `svelte.dev` with support for system preferences, zero-FOUC SSR, and cross-tab sync:
+To prevent any flash of unstyled content during SSR, place the blocking init script inside `<head>` in `src/app.html`:
+
+```html
+<head>
+  <!-- Initialize theme before body renders -->
+  <script>
+    %sveltekit.head%
+  </script>
+</head>
+```
+
+Or inject `initThemeScript` directly in `src/app.html` or a server hook:
+
+```html
+<script>
+  try {
+    const p = localStorage.getItem('fleet-theme');
+    const m = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const t = (!p || p === 'system') ? (m ? 'dark' : 'light') : p;
+    document.documentElement.dataset.theme = t;
+    document.documentElement.classList.toggle('dark', t === 'dark');
+    document.documentElement.classList.toggle('light', t === 'light');
+  } catch (e) {}
+</script>
+```
+
+Or import `initThemeScript` / `getInitThemeScript` programmatically:
+```typescript
+import { initThemeScript } from '@kleinbem/web-config/theme/init';
+```
+
+### 5. Theme Switcher (`<ThemeToggle />`)
+
+Modeled after `svelte.dev` with support for system preferences, responsive reactivity, and cross-tab sync:
 
 ```svelte
 <script>
