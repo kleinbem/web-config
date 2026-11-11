@@ -1,4 +1,5 @@
 import type { Component } from 'svelte';
+import type { HTMLAttributes } from 'svelte/elements';
 
 export interface CommandItem {
 	id: string | number;
@@ -14,7 +15,8 @@ export interface CommandItem {
 	onSelect?: (item: CommandItem) => void;
 }
 
-export interface CommandPaletteProps {
+export interface CommandPaletteProps
+	extends Omit<HTMLAttributes<HTMLDivElement>, 'class' | 'onselect'> {
 	items?: CommandItem[];
 	open?: boolean;
 	placeholder?: string;
@@ -22,7 +24,6 @@ export interface CommandPaletteProps {
 	shortcut?: boolean;
 	onSelect?: (item: CommandItem) => void;
 	class?: string;
-	[key: string]: unknown;
 }
 
 declare const CommandPalette: Component<CommandPaletteProps>;

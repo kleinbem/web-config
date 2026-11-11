@@ -63,15 +63,14 @@
 
 {#if variant === 'segmented'}
 	<div
-		role="radiogroup"
+		role="group"
 		aria-label="Font size selection"
 		class="inline-flex items-center p-0.5 rounded-lg border border-line bg-surface {className}"
 		{...restProps}
 	>
 		<button
 			type="button"
-			role="radio"
-			aria-checked={currentSize === 'normal'}
+			aria-pressed={currentSize === 'normal'}
 			aria-label="Normal font size (100%)"
 			title="Normal (100%)"
 			onclick={() => fontSize.set('normal')}
@@ -82,8 +81,7 @@
 		</button>
 		<button
 			type="button"
-			role="radio"
-			aria-checked={currentSize === 'large'}
+			aria-pressed={currentSize === 'large'}
 			aria-label="Large font size (112.5%)"
 			title="Large (112.5%)"
 			onclick={() => fontSize.set('large')}
@@ -94,8 +92,7 @@
 		</button>
 		<button
 			type="button"
-			role="radio"
-			aria-checked={currentSize === 'larger'}
+			aria-pressed={currentSize === 'larger'}
 			aria-label="Extra large font size (125%)"
 			title="Extra large (125%)"
 			onclick={() => fontSize.set('larger')}

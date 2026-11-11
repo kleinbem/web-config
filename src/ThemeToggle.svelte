@@ -105,15 +105,14 @@
 
 {#if variant === 'segmented'}
 	<div
-		role="radiogroup"
+		role="group"
 		aria-label="Theme selection"
 		class="inline-flex items-center p-0.5 rounded-lg border border-line bg-surface {className}"
 		{...restProps}
 	>
 		<button
 			type="button"
-			role="radio"
-			aria-checked={preference === 'system'}
+			aria-pressed={preference === 'system'}
 			aria-label="System theme"
 			title="System ({theme.system})"
 			onclick={() => theme.set('system')}
@@ -124,8 +123,7 @@
 		</button>
 		<button
 			type="button"
-			role="radio"
-			aria-checked={preference === 'light'}
+			aria-pressed={preference === 'light'}
 			aria-label="Light theme"
 			title="Light theme"
 			onclick={() => theme.set('light')}
@@ -136,8 +134,7 @@
 		</button>
 		<button
 			type="button"
-			role="radio"
-			aria-checked={preference === 'dark'}
+			aria-pressed={preference === 'dark'}
 			aria-label="Dark theme"
 			title="Dark theme"
 			onclick={() => theme.set('dark')}
