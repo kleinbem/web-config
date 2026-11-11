@@ -2,15 +2,6 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "$app/tsconfig",
   "compilerOptions": {
-    "strict": true,
-    "rootDirs": [
-      ".",
-      "./.svelte-kit/types"
-    ]
-  },
-  "include": [
-    "src",
-    "test",
-    "*"
-  ]
+    "strict": true
+  }
 }

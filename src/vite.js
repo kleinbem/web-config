@@ -8,9 +8,9 @@ import { defineConfig } from 'vite';
  *
  * @param {Object} [options]
  * @param {import('@sveltejs/kit').Adapter | 'static'} [options.adapter]
- * @param {Object} [options.adapterOptions] Options passed to adapter-static if adapter === 'static'
+ * @param {import('@sveltejs/adapter-static').AdapterOptions} [options.adapterOptions] Options passed to adapter-static if adapter === 'static'
  * @param {Object} [options.compilerOptions] Svelte compiler options override
- * @param {Object} [options.experimental] SvelteKit experimental flags override
+ * @param {NonNullable<import('@sveltejs/kit/vite').Config['experimental']>} [options.experimental] SvelteKit experimental flags override
  * @param {import('vite').ServerOptions} [options.server] Vite dev server options
  * @param {import('vite').PluginOption[]} [options.plugins] Additional Vite plugins
  * @returns {import('vite').UserConfig}
@@ -26,7 +26,8 @@ export function defineWebConfig(options = {}) {
   } = options;
 
   let resolvedAdapter;
-  if (typeof adapter === 'function') {
+  // SvelteKit adapters are objects ({ name, adapt }), e.g. adapter-cloudflare().
+  if (adapter && (typeof adapter === 'object' || typeof adapter === 'function')) {
     resolvedAdapter = adapter;
   } else if (adapter === 'static') {
     resolvedAdapter = adapterStatic({

@@ -1,4 +1,6 @@
+import type { AdapterOptions } from '@sveltejs/adapter-static';
 import type { Adapter } from '@sveltejs/kit';
+import type { Config } from '@sveltejs/kit/vite';
 import type { CompileOptions } from 'svelte/compiler';
 import type { PluginOption, ServerOptions, UserConfig } from 'vite';
 
@@ -11,7 +13,7 @@ export interface FleetWebConfigOptions {
   /**
    * Options passed to adapter-static if adapter is 'static'.
    */
-  adapterOptions?: Record<string, any>;
+  adapterOptions?: AdapterOptions;
   /**
    * Additional Svelte compiler options to merge.
    */
@@ -19,7 +21,7 @@ export interface FleetWebConfigOptions {
   /**
    * Additional SvelteKit experimental options to merge.
    */
-  experimental?: Record<string, any>;
+  experimental?: Config['experimental'];
   /**
    * Vite dev server options (e.g. proxy, port).
    */
