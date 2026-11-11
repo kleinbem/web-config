@@ -10,6 +10,7 @@
 		showLabel = false,
 		class: className = '',
 		theme = defaultTheme,
+		onkeydown,
 		...restProps
 	} = $props();
 
@@ -126,7 +127,11 @@
 {#if variant === 'segmented'}
 	<div
 		role="radiogroup"
-		onkeydown={(e) => radioKeydown(e, ['system', 'light', 'dark'], preference, (v) => theme.set(v))}
+		onkeydown={(e) => {
+			// Run the consumer's handler too; it can opt out with preventDefault().
+			onkeydown?.(e);
+			if (!e.defaultPrevented) radioKeydown(e, ['system', 'light', 'dark'], preference, (v) => theme.set(v));
+		}}
 		aria-label="Theme selection"
 		class="inline-flex items-center p-0.5 rounded-lg border border-line bg-surface {className}"
 		{...restProps}
@@ -175,6 +180,7 @@
 	<button
 		type="button"
 		onclick={handleToggleClick}
+		{onkeydown}
 		aria-label={toggleAriaLabel}
 		title={toggleTitle}
 		class="inline-flex items-center justify-center gap-1.5 rounded-lg border border-line bg-surface hover:bg-surface-high text-fg hover:text-heading p-2 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent {className}"
