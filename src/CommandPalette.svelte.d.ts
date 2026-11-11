@@ -16,7 +16,7 @@ export interface CommandItem {
 }
 
 export interface CommandPaletteProps
-	extends Omit<HTMLAttributes<HTMLDivElement>, 'class' | 'onselect'> {
+	extends Omit<HTMLAttributes<HTMLDivElement>, 'class'> {
 	items?: CommandItem[];
 	open?: boolean;
 	placeholder?: string;

@@ -42,6 +42,26 @@
 				? 'Font size: Large (112.5%)'
 				: 'Font size: Extra Large (125%)';
 	});
+
+	/**
+	 * Arrow/Home/End move the choice within a radio group (roving tabindex).
+	 * @param {KeyboardEvent & { currentTarget: HTMLElement }} e
+	 * @param {string[]} values
+	 * @param {string} current
+	 * @param {(value: any) => void} choose
+	 */
+	function radioKeydown(e, values, current, choose) {
+		const i = values.indexOf(current);
+		let next = -1;
+		if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (i + 1) % values.length;
+		else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (i - 1 + values.length) % values.length;
+		else if (e.key === 'Home') next = 0;
+		else if (e.key === 'End') next = values.length - 1;
+		if (next < 0) return;
+		e.preventDefault();
+		choose(values[next]);
+		/** @type {HTMLElement | undefined} */ (e.currentTarget.querySelectorAll('[role="radio"]')[next])?.focus();
+	}
 </script>
 
 {#snippet aIcon()}
@@ -63,14 +83,17 @@
 
 {#if variant === 'segmented'}
 	<div
-		role="group"
+		role="radiogroup"
+		onkeydown={(e) => radioKeydown(e, ['normal', 'large', 'larger'], currentSize, (v) => fontSize.set(v))}
 		aria-label="Font size selection"
 		class="inline-flex items-center p-0.5 rounded-lg border border-line bg-surface {className}"
 		{...restProps}
 	>
 		<button
 			type="button"
-			aria-pressed={currentSize === 'normal'}
+			role="radio"
+			aria-checked={currentSize === 'normal'}
+			tabindex={currentSize === 'normal' ? 0 : -1}
 			aria-label="Normal font size (100%)"
 			title="Normal (100%)"
 			onclick={() => fontSize.set('normal')}
@@ -81,7 +104,9 @@
 		</button>
 		<button
 			type="button"
-			aria-pressed={currentSize === 'large'}
+			role="radio"
+			aria-checked={currentSize === 'large'}
+			tabindex={currentSize === 'large' ? 0 : -1}
 			aria-label="Large font size (112.5%)"
 			title="Large (112.5%)"
 			onclick={() => fontSize.set('large')}
@@ -92,7 +117,9 @@
 		</button>
 		<button
 			type="button"
-			aria-pressed={currentSize === 'larger'}
+			role="radio"
+			aria-checked={currentSize === 'larger'}
+			tabindex={currentSize === 'larger' ? 0 : -1}
 			aria-label="Extra large font size (125%)"
 			title="Extra large (125%)"
 			onclick={() => fontSize.set('larger')}

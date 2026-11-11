@@ -51,6 +51,26 @@
 			? `Switch to light theme (currently ${preference === 'system' ? 'system dark' : 'dark'})`
 			: `Switch to dark theme (currently ${preference === 'system' ? 'system light' : 'light'})`;
 	});
+
+	/**
+	 * Arrow/Home/End move the choice within a radio group (roving tabindex).
+	 * @param {KeyboardEvent & { currentTarget: HTMLElement }} e
+	 * @param {string[]} values
+	 * @param {string} current
+	 * @param {(value: any) => void} choose
+	 */
+	function radioKeydown(e, values, current, choose) {
+		const i = values.indexOf(current);
+		let next = -1;
+		if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (i + 1) % values.length;
+		else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (i - 1 + values.length) % values.length;
+		else if (e.key === 'Home') next = 0;
+		else if (e.key === 'End') next = values.length - 1;
+		if (next < 0) return;
+		e.preventDefault();
+		choose(values[next]);
+		/** @type {HTMLElement | undefined} */ (e.currentTarget.querySelectorAll('[role="radio"]')[next])?.focus();
+	}
 </script>
 
 {#snippet sunIcon()}
@@ -105,14 +125,17 @@
 
 {#if variant === 'segmented'}
 	<div
-		role="group"
+		role="radiogroup"
+		onkeydown={(e) => radioKeydown(e, ['system', 'light', 'dark'], preference, (v) => theme.set(v))}
 		aria-label="Theme selection"
 		class="inline-flex items-center p-0.5 rounded-lg border border-line bg-surface {className}"
 		{...restProps}
 	>
 		<button
 			type="button"
-			aria-pressed={preference === 'system'}
+			role="radio"
+			aria-checked={preference === 'system'}
+			tabindex={preference === 'system' ? 0 : -1}
 			aria-label="System theme"
 			title="System ({theme.system})"
 			onclick={() => theme.set('system')}
@@ -123,7 +146,9 @@
 		</button>
 		<button
 			type="button"
-			aria-pressed={preference === 'light'}
+			role="radio"
+			aria-checked={preference === 'light'}
+			tabindex={preference === 'light' ? 0 : -1}
 			aria-label="Light theme"
 			title="Light theme"
 			onclick={() => theme.set('light')}
@@ -134,7 +159,9 @@
 		</button>
 		<button
 			type="button"
-			aria-pressed={preference === 'dark'}
+			role="radio"
+			aria-checked={preference === 'dark'}
+			tabindex={preference === 'dark' ? 0 : -1}
 			aria-label="Dark theme"
 			title="Dark theme"
 			onclick={() => theme.set('dark')}

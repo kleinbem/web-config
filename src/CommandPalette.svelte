@@ -66,6 +66,12 @@
 	});
 
 	$effect(() => {
+		// Items can shrink while open; keep the selection on an existing option.
+		if (selectedIndex >= filtered.length) selectedIndex = 0;
+	});
+
+	$effect(() => {
+		filtered;
 		listEl?.querySelector(`#${CSS.escape(optionId(selectedIndex))}`)?.scrollIntoView({ block: 'nearest' });
 	});
 
@@ -155,7 +161,7 @@
 					aria-expanded="true"
 					aria-controls={listId}
 					aria-autocomplete="list"
-					aria-activedescendant={filtered.length > 0 ? optionId(selectedIndex) : undefined}
+					aria-activedescendant={selectedIndex < filtered.length ? optionId(selectedIndex) : undefined}
 					{placeholder}
 					class="w-full py-3.5 px-3 text-sm bg-transparent outline-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400"
 				/>
