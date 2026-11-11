@@ -12,7 +12,7 @@ export const THEME_STORAGE_KEY = 'fleet-theme';
  */
 export function getInitThemeScript(storageKey = THEME_STORAGE_KEY) {
 	const escapedKey = JSON.stringify(storageKey).replace(/</g, '\\u003c');
-	return `try{const p=localStorage.getItem(${escapedKey});const m=window.matchMedia('(prefers-color-scheme: dark)').matches;const t=(!p||p==='system')?(m?'dark':'light'):p;document.documentElement.dataset.theme=t;document.documentElement.classList.toggle('dark',t==='dark');document.documentElement.classList.toggle('light',t==='light');}catch(e){}`;
+	return `try{const p=localStorage.getItem(${escapedKey});const m=window.matchMedia('(prefers-color-scheme: dark)').matches;const t=p==='dark'||p==='light'?p:(m?'dark':'light');document.documentElement.dataset.theme=t;document.documentElement.classList.toggle('dark',t==='dark');document.documentElement.classList.toggle('light',t==='light');}catch(e){}`;
 }
 
 /**

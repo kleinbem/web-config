@@ -1,6 +1,7 @@
 @import "./theme.css";
 
-:root,
+/* :root:root matches the specificity of theme.css's light-preference :root:not(...) rule. */
+:root:root,
 :root[data-theme],
 [data-theme] {
   color-scheme: dark !important;
