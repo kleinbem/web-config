@@ -1,5 +1,6 @@
 import type { AdapterOptions } from '@sveltejs/adapter-static';
-import type { Adapter, Config } from '@sveltejs/kit';
+import type { Adapter } from '@sveltejs/kit';
+import type { Config } from '@sveltejs/kit/vite';
 import type { CompileOptions } from 'svelte/compiler';
 import type { PluginOption, ServerOptions, UserConfig } from 'vite';
 

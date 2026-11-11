@@ -10,7 +10,7 @@ import { defineConfig } from 'vite';
  * @param {import('@sveltejs/kit').Adapter | 'static'} [options.adapter]
  * @param {import('@sveltejs/adapter-static').AdapterOptions} [options.adapterOptions] Options passed to adapter-static if adapter === 'static'
  * @param {Object} [options.compilerOptions] Svelte compiler options override
- * @param {NonNullable<import('@sveltejs/kit').Config['experimental']>} [options.experimental] SvelteKit experimental flags override
+ * @param {NonNullable<import('@sveltejs/kit/vite').Config['experimental']>} [options.experimental] SvelteKit experimental flags override
  * @param {import('vite').ServerOptions} [options.server] Vite dev server options
  * @param {import('vite').PluginOption[]} [options.plugins] Additional Vite plugins
  * @returns {import('vite').UserConfig}

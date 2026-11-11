@@ -154,7 +154,7 @@ Zero-FOUC init script for `src/app.html`:
 <script>
   try {
     const s = localStorage.getItem('fleet-font-size');
-    if (s === 'large' || s === 'larger') document.documentElement.dataset.fontSize = s;
+    if (['small', 'large', 'larger'].includes(s)) document.documentElement.dataset.fontSize = s;
   } catch (e) {}
 </script>
 ```
