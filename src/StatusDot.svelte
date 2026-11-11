@@ -52,7 +52,7 @@
 			case 'checking':
 				return 'bg-sky-500 shadow-[0_0_8px_rgba(14,165,233,0.5)] motion-safe:animate-pulse';
 			default:
-				return 'bg-zinc-400/60 dark:bg-zinc-600/60';
+				return 'bg-muted/60';
 		}
 	});
 </script>

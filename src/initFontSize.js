@@ -12,7 +12,7 @@ export const FONT_SIZE_STORAGE_KEY = 'fleet-font-size';
  */
 export function getInitFontSizeScript(storageKey = FONT_SIZE_STORAGE_KEY) {
 	const escapedKey = JSON.stringify(storageKey).replace(/</g, '\\u003c');
-	return `try{const s=localStorage.getItem(${escapedKey});if(s&&s!=='normal'){document.documentElement.dataset.fontSize=s;document.documentElement.classList.add('font-size-'+s);}}catch(e){}`;
+	return `try{const s=localStorage.getItem(${escapedKey});if(s==='large'||s==='larger'){document.documentElement.dataset.fontSize=s;document.documentElement.classList.add('font-size-'+s);}}catch(e){}`;
 }
 
 /**
