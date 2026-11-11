@@ -9,7 +9,7 @@ Enforces the fleet standard across all web applications and embedded dashboards 
 - **Strict Runes**: `dynamicCompileOptions` enforces `{ runes: true }` locally while allowing legacy `node_modules`.
 - **SvelteKit 3.1+**: Inline Vite config, `forkPreloads: true`.
 - **Tailwind CSS 4**: Modern Vite plugin without legacy configuration files.
-- **jj Workspace Friendly**: Standard `rootDirs` configuration for TypeScript and `$types` resolution.
+- **jj Workspace Friendly**: documented `rootDirs` setup for TypeScript and `$types` resolution.
 
 ## Usage
 
@@ -41,9 +41,16 @@ export default defineWebConfig({
 
 ```json
 {
-  "extends": "@kleinbem/web-config/tsconfig/svelte"
+  "extends": "@kleinbem/web-config/tsconfig/svelte",
+  "compilerOptions": {
+    "rootDirs": [".", "./.svelte-kit/types"]
+  },
+  "include": ["src", "test", "*"]
 }
 ```
+
+`rootDirs` and `include` stay in your own file: TypeScript resolves them relative to the config
+that declares them, so in the shared one they would point into `node_modules`.
 
 ### 3. Shared Theme & Styles (`app.css`)
 
@@ -60,34 +67,31 @@ export default defineWebConfig({
 @import "@kleinbem/web-config/base.css";
 @import "@kleinbem/web-config/badges.css";
 @import "@kleinbem/web-config/prose.css";
+
+/* Make dark: follow the active theme (data-theme set by the init script / ThemeToggle),
+   not only the OS setting. CommandPalette relies on it. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
 ```
 
 ### 4. Zero-FOUC Initialization (`app.html`)
 
-To prevent any flash of unstyled content during SSR, place the blocking init script inside `<head>` in `src/app.html`:
+To prevent a flash of the wrong theme, put the blocking init script in `<head>` of `src/app.html`,
+before `%sveltekit.head%`:
 
 ```html
 <head>
-  <!-- Initialize theme before body renders -->
   <script>
-    %sveltekit.head%
+    try {
+      const p = localStorage.getItem('fleet-theme');
+      const m = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const t = p === 'dark' || p === 'light' ? p : m ? 'dark' : 'light';
+      document.documentElement.dataset.theme = t;
+      document.documentElement.classList.toggle('dark', t === 'dark');
+      document.documentElement.classList.toggle('light', t === 'light');
+    } catch (e) {}
   </script>
+  %sveltekit.head%
 </head>
-```
-
-Or inject `initThemeScript` directly in `src/app.html` or a server hook:
-
-```html
-<script>
-  try {
-    const p = localStorage.getItem('fleet-theme');
-    const m = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const t = (!p || p === 'system') ? (m ? 'dark' : 'light') : p;
-    document.documentElement.dataset.theme = t;
-    document.documentElement.classList.toggle('dark', t === 'dark');
-    document.documentElement.classList.toggle('light', t === 'light');
-  } catch (e) {}
-</script>
 ```
 
 Or import `initThemeScript` / `getInitThemeScript` programmatically:
@@ -150,7 +154,7 @@ Zero-FOUC init script for `src/app.html`:
 <script>
   try {
     const s = localStorage.getItem('fleet-font-size');
-    if (s && s !== 'normal') document.documentElement.dataset.fontSize = s;
+    if (s === 'large' || s === 'larger') document.documentElement.dataset.fontSize = s;
   } catch (e) {}
 </script>
 ```

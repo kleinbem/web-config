@@ -1,27 +1,24 @@
-# github-config
+# @kleinbem/web-config
 
-Single source of truth for every owned `kleinbem` repo's GitHub settings,
-branch-protection rulesets, standard labels, and security config (secret
-scanning + Dependabot). Public repo: it holds no secrets (state in R2,
-credentials in Actions secrets), only repo names and settings.
+Shared SvelteKit, Vite and Tailwind configuration plus small Svelte components for the kleinbem
+web apps (`foyer`, `attic-ui`, `kleinbem-site`, …). Consumers install it as a git dependency
+(`git+https://github.com/kleinbem/web-config.git#main`), so every merge to `main` reaches them on
+their next lock refresh.
 
 ## Layout
 
 | Path | What lives here |
 |---|---|
-| `repos.tf` | Declares every managed repo + its settings. |
-| `github.tf` | One `modules/repos` instance per owner (kleinbem user, kleinbem-dev org), imports, `moved` blocks. |
-| `modules/repos/` | The per-repo resources: settings, security, ruleset, Actions policy, labels. |
-| `backend.tf` | Cloudflare R2 Terraform state backend. |
-| `variables.tf` | Provider auth + shared variables. |
-| `scripts/govern.py` | Read-only observability — regenerates `DASHBOARD.md` + `governance-report.json`. |
+| `src/vite.js` (+ `vite.d.ts`) | `defineWebConfig()`: the fleet Vite + SvelteKit setup |
+| `tsconfig.base.json`, `tsconfig.svelte.json` | Shared TypeScript settings (`./tsconfig.json`, `./tsconfig/svelte`) |
+| `src/theme*.css`, `base.css`, `badges.css`, `prose.css` | Design tokens and shared styles |
+| `src/theme.svelte.js`, `src/fontSize.svelte.js` | Reactive theme / font-size state, persisted in `localStorage` |
+| `src/initTheme.js`, `src/initFontSize.js` | Blocking `<head>` snippets that avoid a flash of the wrong theme |
+| `src/*.svelte` (+ `.d.ts`) | `ThemeToggle`, `FontSizeToggle`, `StatusDot`, `CommandPalette` |
 
 ## Conventions
 
-- **GitOps, not local apply**: open a PR, let CI (`terraform-plan.yaml`) comment drift; merging to `main` triggers `terraform-apply.yaml`. `just apply` locally is the exception, not the norm.
-- **Auth is GitHub App `app_auth {}`** (`APP_ID`/`APP_PRIVATE_KEY` secrets) — not a PAT. Local and CI use the same mechanism (see `main.tf`'s provider block).
-- Existing repos are **adopted via `import` blocks**, never created out-of-band — see the root CLAUDE.md's IaC placement rule (self-contained IaC gets its own repo; this is the canonical example).
-- Never delete an IaC-managed resource via `gh repo delete` or the raw API — remove it from Terraform config and apply, or the state orphans and CI breaks on the next run.
-- `just report` regenerates `DASHBOARD.md`; it's observability only, never hand-edited.
-- `.terraform.lock.hcl` is committed and CI inits with `-lockfile=readonly`. To bump the provider: `tofu init -backend=false -upgrade`, then `tofu providers lock -platform=linux_amd64 -platform=linux_arm64 -platform=darwin_arm64`, and commit the lock.
-- The PR `plan` check fails when the plan deletes or replaces a resource or removes a label. If that is intended, add the `allow-destroy` label to the PR; the check reruns on label changes. The apply after the merge checks its own plan the same way against the merged PR's labels (manual runs: the `allow-destroy` input).
+- Every public entry point is listed in `package.json` `exports` with its `.d.ts`; add both together.
+- Plain JS with JSDoc, no build step: consumers compile the sources.
+- `just check` (= `npm run check`) syntax-checks the JS entry points; CI runs the same.
+- A change here can break every consumer: check the API in `README.md` and keep it compatible.
