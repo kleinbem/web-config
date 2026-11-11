@@ -1,0 +1,84 @@
+{
+  "name": "@kleinbem/web-config",
+  "version": "0.1.0",
+  "description": "Shared cutting-edge SvelteKit, Vite, and Tailwind configuration for the kleinbem fleet",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./vite": {
+      "types": "./src/vite.d.ts",
+      "default": "./src/vite.js"
+    },
+    "./tsconfig.json": "./tsconfig.base.json",
+    "./tsconfig/svelte": "./tsconfig.svelte.json",
+    "./theme": "./src/theme.css",
+    "./theme/dark": "./src/theme-dark.css",
+    "./theme/light": "./src/theme-light.css",
+    "./theme/toggle": {
+      "types": "./src/ThemeToggle.svelte.d.ts",
+      "svelte": "./src/ThemeToggle.svelte",
+      "default": "./src/ThemeToggle.svelte"
+    },
+    "./theme/state": {
+      "types": "./src/theme.svelte.d.ts",
+      "svelte": "./src/theme.svelte.js",
+      "default": "./src/theme.svelte.js"
+    },
+    "./theme/init": {
+      "types": "./src/initTheme.d.ts",
+      "default": "./src/initTheme.js"
+    },
+    "./font-size/toggle": {
+      "types": "./src/FontSizeToggle.svelte.d.ts",
+      "svelte": "./src/FontSizeToggle.svelte",
+      "default": "./src/FontSizeToggle.svelte"
+    },
+    "./font-size/state": {
+      "types": "./src/fontSize.svelte.d.ts",
+      "svelte": "./src/fontSize.svelte.js",
+      "default": "./src/fontSize.svelte.js"
+    },
+    "./font-size/init": {
+      "types": "./src/initFontSize.d.ts",
+      "default": "./src/initFontSize.js"
+    },
+    "./components/StatusDot": {
+      "types": "./src/StatusDot.svelte.d.ts",
+      "svelte": "./src/StatusDot.svelte",
+      "default": "./src/StatusDot.svelte"
+    },
+    "./components/CommandPalette": {
+      "types": "./src/CommandPalette.svelte.d.ts",
+      "svelte": "./src/CommandPalette.svelte",
+      "default": "./src/CommandPalette.svelte"
+    },
+    "./styles.css": "./src/styles.css",
+    "./base.css": "./src/base.css",
+    "./badges.css": "./src/badges.css",
+    "./prose.css": "./src/prose.css"
+  },
+  "scripts": {
+    "check": "for f in src/index.js src/vite.js src/initTheme.js src/initFontSize.js; do node --check \"$f\" || exit 1; done"
+  },
+  "peerDependencies": {
+    "@sveltejs/adapter-static": "^3.0.0 || ^4.0.0",
+    "@sveltejs/kit": "^3.1.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "svelte": "^5.36.0",
+    "tailwindcss": "^4.0.0",
+    "vite": "^8.0.0"
+  },
+  "files": [
+    "src",
+    "tsconfig.base.json",
+    "tsconfig.svelte.json",
+    "README.md"
+  ],
+  "author": "Martin Kleinberger <martin.kleinberger@gmail.com>",
+  "license": "MIT"
+}
