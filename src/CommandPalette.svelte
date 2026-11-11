@@ -28,6 +28,12 @@
 	let query = $state('');
 	let selectedIndex = $state(0);
 	let inputEl = $state(null);
+	/** @type {HTMLElement | null} */
+	let listEl = $state(null);
+	const uid = $props.id();
+	const listId = `${uid}-list`;
+	/** @param {number} i */
+	const optionId = (i) => `${uid}-opt-${i}`;
 
 	let filtered = $derived.by(() => {
 		const q = query.trim().toLowerCase();
@@ -59,6 +65,16 @@
 		selectedIndex = 0;
 	});
 
+	$effect(() => {
+		// Items can shrink while open; keep the selection on an existing option.
+		if (selectedIndex >= filtered.length) selectedIndex = 0;
+	});
+
+	$effect(() => {
+		filtered;
+		listEl?.querySelector(`#${CSS.escape(optionId(selectedIndex))}`)?.scrollIntoView({ block: 'nearest' });
+	});
+
 	function selectItem(item) {
 		if (!item) return;
 		if (typeof item.onSelect === 'function') {
@@ -66,7 +82,7 @@
 		} else if (typeof onSelect === 'function') {
 			onSelect(item);
 		} else if (item.url) {
-			if (item.external || item.url.startsWith('http')) {
+			if (item.external || /^https?:\/\//i.test(item.url)) {
 				window.open(item.url, '_blank', 'noopener,noreferrer');
 			} else {
 				window.location.href = item.url;
@@ -94,6 +110,10 @@
 		if (e.key === 'Escape') {
 			e.preventDefault();
 			open = false;
+		} else if (e.key === 'Tab') {
+			// The input is the only tab stop; results are reached with the arrow keys.
+			e.preventDefault();
+			inputEl?.focus();
 		} else if (e.key === 'ArrowDown') {
 			e.preventDefault();
 			selectedIndex = (selectedIndex + 1) % Math.max(1, filtered.length);
@@ -136,6 +156,12 @@
 					bind:this={inputEl}
 					bind:value={query}
 					type="text"
+					role="combobox"
+					aria-label="Search"
+					aria-expanded="true"
+					aria-controls={listId}
+					aria-autocomplete="list"
+					aria-activedescendant={selectedIndex < filtered.length ? optionId(selectedIndex) : undefined}
 					{placeholder}
 					class="w-full py-3.5 px-3 text-sm bg-transparent outline-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400"
 				/>
@@ -144,7 +170,13 @@
 				</kbd>
 			</div>
 
-			<div class="overflow-y-auto p-2 divide-y divide-transparent">
+			<div
+				bind:this={listEl}
+				id={listId}
+				role="listbox"
+				aria-label="Results"
+				class="overflow-y-auto p-2 divide-y divide-transparent"
+			>
 				{#if filtered.length === 0}
 					<div class="py-12 text-center text-sm text-zinc-500">
 						{emptyText}
@@ -154,6 +186,10 @@
 						{@const isSelected = index === selectedIndex}
 						<button
 							type="button"
+							id={optionId(index)}
+							role="option"
+							aria-selected={isSelected}
+							tabindex="-1"
 							onmouseenter={() => (selectedIndex = index)}
 							onclick={() => selectItem(item)}
 							class="w-full text-left flex items-center justify-between p-2.5 rounded-xl text-sm transition-colors cursor-pointer {isSelected
