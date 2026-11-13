@@ -23,6 +23,11 @@ export interface FleetWebConfigOptions {
    */
   experimental?: Config['experimental'];
   /**
+   * SvelteKit build version options. Defaults to `{ name: package.json#version }`
+   * instead of `Date.now()` so Nix builds stay bit-for-bit reproducible.
+   */
+  version?: Config['version'];
+  /**
    * Vite dev server options (e.g. proxy, port).
    */
   server?: ServerOptions;
