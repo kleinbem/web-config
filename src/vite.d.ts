@@ -23,8 +23,10 @@ export interface FleetWebConfigOptions {
    */
   experimental?: Config['experimental'];
   /**
-   * SvelteKit build version options. Defaults to `{ name: package.json#version }`
-   * instead of `Date.now()` so Nix builds stay bit-for-bit reproducible.
+   * SvelteKit build version options. Defaults to a deterministic SHA-256 digest
+   * of the app source (`package.json`, `package-lock.json`, `src`, `static`)
+   * instead of `Date.now()` so Nix builds stay reproducible while deployments
+   * with source changes still produce distinct client versions.
    */
   version?: Config['version'];
   /**

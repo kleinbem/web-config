@@ -1,16 +1,37 @@
-import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { lstatSync, readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import adapterStatic from '@sveltejs/adapter-static';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
-function resolvePackageVersion() {
-  if (process.env.npm_package_version) return process.env.npm_package_version;
-  try {
-    const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
-    if (typeof pkg.version === 'string' && pkg.version) return pkg.version;
-  } catch {}
-  return undefined;
+function resolveBuildVersion() {
+  const hash = createHash('sha256');
+  let hashed = false;
+  const walk = (entry) => {
+    let st;
+    try {
+      st = lstatSync(entry);
+    } catch {
+      return;
+    }
+    if (st.isDirectory()) {
+      for (const child of readdirSync(entry).sort()) {
+        walk(join(entry, child));
+      }
+    } else if (st.isFile()) {
+      hash.update(entry.replaceAll('\\', '/'));
+      hash.update('\0');
+      hash.update(readFileSync(entry));
+      hash.update('\0');
+      hashed = true;
+    }
+  };
+  for (const root of ['package.json', 'package-lock.json', 'src', 'static']) {
+    walk(root);
+  }
+  return hashed ? hash.digest('hex').slice(0, 12) : undefined;
 }
 
 /**
@@ -21,7 +42,7 @@ function resolvePackageVersion() {
  * @param {import('@sveltejs/adapter-static').AdapterOptions} [options.adapterOptions] Options passed to adapter-static if adapter === 'static'
  * @param {Object} [options.compilerOptions] Svelte compiler options override
  * @param {NonNullable<import('@sveltejs/kit/vite').Config['experimental']>} [options.experimental] SvelteKit experimental flags override
- * @param {import('@sveltejs/kit/vite').Config['version']} [options.version] SvelteKit build version config (defaults to package.json version for reproducible builds)
+ * @param {import('@sveltejs/kit/vite').Config['version']} [options.version] SvelteKit build version config (defaults to deterministic source content digest)
  * @param {import('vite').ServerOptions} [options.server] Vite dev server options
  * @param {import('vite').PluginOption[]} [options.plugins] Additional Vite plugins
  * @returns {import('vite').UserConfig}
@@ -37,8 +58,8 @@ export function defineWebConfig(options = {}) {
     plugins = []
   } = options;
 
-  const pkgVersion = resolvePackageVersion();
-  const resolvedVersion = version ?? (pkgVersion ? { name: pkgVersion } : undefined);
+  const buildVersion = version === undefined ? resolveBuildVersion() : undefined;
+  const resolvedVersion = version ?? (buildVersion ? { name: buildVersion } : undefined);
 
   let resolvedAdapter;
   // SvelteKit adapters are objects ({ name, adapt }), e.g. adapter-cloudflare().
