@@ -18,4 +18,4 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - uses: kleinbem/actions/nix-setup@f716d62182471a9e862ae0bd61d34201e6cea971 # v1.3.1
-      - uses: kleinbem/actions/lint@f716d62182471a9e862ae0bd61d34201e6cea971 # v1.3.1
+      - uses: kleinbem/actions/lint@4c768a74873b0de7772c1af40b777bacb7c68495 # v1.6.2
