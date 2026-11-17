@@ -26,7 +26,8 @@ function initBlockCheck() {
   };
 }
 
-function resolveBuildVersion() {
+/** @param {string[]} sources app source and static asset directories */
+function resolveBuildVersion(sources) {
   const hash = createHash('sha256');
   let hashed = false;
   /** @param {string} entry */
@@ -49,7 +50,7 @@ function resolveBuildVersion() {
       hashed = true;
     }
   };
-  for (const root of ['package.json', 'package-lock.json', 'src', 'static']) {
+  for (const root of ['package.json', 'package-lock.json', ...sources]) {
     walk(root);
   }
   return hashed ? hash.digest('hex').slice(0, 12) : undefined;
@@ -85,7 +86,8 @@ export function defineWebConfig(options = {}) {
     initCheck = true
   } = options;
 
-  const buildVersion = version === undefined ? resolveBuildVersion() : undefined;
+  const sources = [kit.files?.src ?? 'src', kit.files?.assets ?? 'static'];
+  const buildVersion = version === undefined ? resolveBuildVersion(sources) : undefined;
   const resolvedVersion = version ?? (buildVersion ? { name: buildVersion } : undefined);
 
   let resolvedAdapter;
@@ -118,10 +120,12 @@ export function defineWebConfig(options = {}) {
             ...compilerOptions.experimental
           }
         },
-        dynamicCompileOptions({ filename }) {
-          if (!filename.includes('node_modules')) {
-            return { runes: true };
-          }
+        // Runes for app code; the caller's own callback runs too and wins.
+        dynamicCompileOptions(data) {
+          const base = data.filename.includes('node_modules') ? undefined : { runes: true };
+          const own = kit.dynamicCompileOptions?.(data);
+          if (own instanceof Promise) return own.then((o) => (base || o ? { ...base, ...o } : undefined));
+          return base || own ? { ...base, ...own } : undefined;
         },
         experimental: {
           forkPreloads: true,
