@@ -2,7 +2,7 @@
 
 Shared SvelteKit, Vite and Tailwind configuration plus small Svelte components for the kleinbem
 web apps (`foyer`, `attic-ui`, `kleinbem-site`, …). Consumers install a release tag as a git dependency
-(`git+https://github.com/kleinbem/web-config.git#v0.2.0`). A change reaches them when it is tagged
+(`github:kleinbem/web-config#v0.2.0`). A change reaches them when it is tagged
 and they bump the tag: bump `version` in `package.json` in the PR, tag `vX.Y.Z` after the merge.
 
 ## Layout

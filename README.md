@@ -16,10 +16,12 @@ Enforces the fleet standard across all web applications and embedded dashboards 
 ### 0. Install
 
 ```bash
-npm install "git+https://github.com/kleinbem/web-config.git#v0.2.0"
+npm install "github:kleinbem/web-config#v0.2.0"
 ```
 
-Pin a release tag, not `main` or a commit, so every app names the same version.
+Pin a release tag, not `main` or a commit, so every app names the same version. `github:` is the
+form npm itself writes to `package.json`. If npm records the lock entry as `git+ssh://`, change it
+to `git+https://github.com/kleinbem/web-config.git#<sha>` so CI and Nix builds need no SSH key.
 
 ### 1. `vite.config.ts`
 
