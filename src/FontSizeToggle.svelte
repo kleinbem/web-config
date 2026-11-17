@@ -1,5 +1,5 @@
 <script>
-	import { fontSize as defaultFontSize } from './fontSize.svelte.js';
+	import { applyFontSize, fontSize as defaultFontSize } from './fontSize.svelte.js';
 
 	/**
 	 * @typedef {'button' | 'segmented'} FontSizeVariant
@@ -14,13 +14,8 @@
 		...restProps
 	} = $props();
 
-	// Sync active font size to document element
-	$effect(() => {
-		const size = fontSize.current;
-		document.documentElement.dataset.fontSize = size;
-		document.documentElement.classList.remove('font-size-normal', 'font-size-large', 'font-size-larger');
-		document.documentElement.classList.add(`font-size-${size}`);
-	});
+	// The singleton syncs itself; this covers a custom `fontSize` instance.
+	$effect(() => applyFontSize(fontSize.current));
 
 	function handleToggleClick() {
 		fontSize.cycle();

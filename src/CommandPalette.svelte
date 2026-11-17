@@ -14,6 +14,7 @@
 	 * @property {function(CommandItem): void} [onSelect]
 	 */
 
+	/** @type {import('./CommandPalette.svelte.d.ts').CommandPaletteProps} */
 	let {
 		items = [],
 		open = $bindable(false),
@@ -27,6 +28,7 @@
 
 	let query = $state('');
 	let selectedIndex = $state(0);
+	/** @type {HTMLInputElement | null} */
 	let inputEl = $state(null);
 	/** @type {HTMLElement | null} */
 	let listEl = $state(null);
@@ -75,6 +77,7 @@
 		listEl?.querySelector(`#${CSS.escape(optionId(selectedIndex))}`)?.scrollIntoView({ block: 'nearest' });
 	});
 
+	/** @param {CommandItem | undefined} item */
 	function selectItem(item) {
 		if (!item) return;
 		if (typeof item.onSelect === 'function') {
@@ -91,6 +94,7 @@
 		open = false;
 	}
 
+	/** @param {KeyboardEvent} e */
 	function handleKeyDown(e) {
 		if (!open) {
 			if (!shortcut) return;

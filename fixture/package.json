@@ -1,0 +1,5 @@
+{
+  "name": "web-config-fixture",
+  "private": true,
+  "type": "module"
+}

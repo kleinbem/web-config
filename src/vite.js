@@ -1,14 +1,31 @@
 import { createHash } from 'node:crypto';
-import { lstatSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, lstatSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import adapterStatic from '@sveltejs/adapter-static';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
+import { checkInitBlock } from './initHtml.js';
+
+// Warns when the theme init block in src/app.html has drifted from the shared one.
+/** @returns {import('vite').Plugin} */
+function initBlockCheck() {
+  return {
+    name: 'web-config:init-check',
+    buildStart() {
+      const file = 'src/app.html';
+      if (!existsSync(file)) return;
+      for (const problem of checkInitBlock(readFileSync(file, 'utf8'))) {
+        this.warn(`${file}: ${problem} (fix: npx web-config sync)`);
+      }
+    }
+  };
+}
 
 function resolveBuildVersion() {
   const hash = createHash('sha256');
   let hashed = false;
+  /** @param {string} entry */
   const walk = (entry) => {
     let st;
     try {
@@ -45,6 +62,7 @@ function resolveBuildVersion() {
  * @param {import('@sveltejs/kit/vite').Config['version']} [options.version] SvelteKit build version config (defaults to deterministic source content digest)
  * @param {import('vite').ServerOptions} [options.server] Vite dev server options
  * @param {import('vite').PluginOption[]} [options.plugins] Additional Vite plugins
+ * @param {boolean} [options.initCheck] Warn when the init block in src/app.html is missing or stale (default true)
  * @returns {import('vite').UserConfig}
  */
 export function defineWebConfig(options = {}) {
@@ -55,7 +73,8 @@ export function defineWebConfig(options = {}) {
     experimental = {},
     version,
     server = {},
-    plugins = []
+    plugins = [],
+    initCheck = true
   } = options;
 
   const buildVersion = version === undefined ? resolveBuildVersion() : undefined;
@@ -99,6 +118,7 @@ export function defineWebConfig(options = {}) {
           ...experimental
         }
       }),
+      ...(initCheck ? [initBlockCheck()] : []),
       ...plugins
     ],
     server
