@@ -6,7 +6,8 @@ import type { PluginOption, ServerOptions, UserConfig } from 'vite';
 
 export interface FleetWebConfigOptions {
   /**
-   * Adapter to use. Defaults to 'static' (adapter-static configured for single-page app / embedded daemon).
+   * Adapter to use. Defaults to 'static': adapter-static writing to `build/` with a `200.html`
+   * SPA fallback, so prerendered pages keep their own `index.html`.
    * Or pass an initialized Adapter instance (e.g. adapter-cloudflare).
    */
   adapter?: 'static' | Adapter;
@@ -37,6 +38,16 @@ export interface FleetWebConfigOptions {
    * Additional Vite plugins to include.
    */
   plugins?: PluginOption[];
+  /**
+   * Other SvelteKit options (`preprocess`, `paths`, `prerender`, `alias`, ...). The options above
+   * win over the same keys here.
+   */
+  kit?: Omit<Config, 'adapter' | 'version' | 'compilerOptions' | 'experimental'>;
+  /**
+   * Any other Vite config (`preview`, `build`, `resolve`, ...), merged over the fleet config
+   * with Vite's `mergeConfig`.
+   */
+  vite?: UserConfig;
   /**
    * Warn when the theme init block in `src/app.html` is missing or stale. Defaults to true.
    */

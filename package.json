@@ -1,6 +1,6 @@
 {
   "name": "@kleinbem/web-config",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Shared cutting-edge SvelteKit, Vite, and Tailwind configuration for the kleinbem fleet",
   "type": "module",
   "main": "./src/index.js",
@@ -66,16 +66,16 @@
     "./prose.css": "./src/prose.css"
   },
   "scripts": {
-    "check": "npm run check:src && npm run check:fixture",
+    "check": "node scripts/install-fixture.js && npm run check:src && npm run check:fixture",
     "check:src": "svelte-check --workspace src --tsconfig ../tsconfig.json --fail-on-warnings",
-    "check:fixture": "node scripts/install-fixture.js && cd fixture && node node_modules/@kleinbem/web-config/bin/web-config.js check && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --fail-on-warnings && vite build",
+    "check:fixture": "cd fixture && node node_modules/@kleinbem/web-config/bin/web-config.js check && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --fail-on-warnings && vite build",
     "test": "node --conditions=browser --import ./test/setup.js --test 'test/*.test.js'"
   },
   "peerDependencies": {
     "@sveltejs/adapter-static": "^3.0.0 || ^4.0.0",
     "@sveltejs/kit": "^3.1.0",
     "@tailwindcss/vite": "^4.0.0",
-    "svelte": "^5.36.0",
+    "svelte": "^5.57.0",
     "tailwindcss": "^4.0.0",
     "vite": "^8.0.0"
   },

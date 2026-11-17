@@ -1,5 +1,6 @@
 import { defineWebConfig } from '@kleinbem/web-config/vite';
 
 export default defineWebConfig({
-	adapterOptions: { fallback: '200.html' }
+	kit: { paths: { relative: true } },
+	vite: { preview: { port: 4173 } }
 });
