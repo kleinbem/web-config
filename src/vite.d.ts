@@ -37,6 +37,10 @@ export interface FleetWebConfigOptions {
    * Additional Vite plugins to include.
    */
   plugins?: PluginOption[];
+  /**
+   * Warn when the theme init block in `src/app.html` is missing or stale. Defaults to true.
+   */
+  initCheck?: boolean;
 }
 
 export declare function defineWebConfig(options?: FleetWebConfigOptions): UserConfig;

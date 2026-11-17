@@ -41,7 +41,7 @@ export default defineWebConfig({
 
 ```json
 {
-  "extends": "@kleinbem/web-config/tsconfig/svelte",
+  "extends": ["$app/tsconfig", "@kleinbem/web-config/tsconfig/svelte"],
   "compilerOptions": {
     "rootDirs": [".", "./.svelte-kit/types"]
   },
@@ -49,8 +49,9 @@ export default defineWebConfig({
 }
 ```
 
-`rootDirs` and `include` stay in your own file: TypeScript resolves them relative to the config
-that declares them, so in the shared one they would point into `node_modules`.
+SvelteKit warns unless `$app/tsconfig` is extended directly, so list both. `rootDirs` and `include`
+stay in your own file: TypeScript resolves them relative to the config that declares them, so in
+the shared one they would point into `node_modules`.
 
 ### 3. Shared Theme & Styles (`app.css`)
 
@@ -75,29 +76,18 @@ that declares them, so in the shared one they would point into `node_modules`.
 
 ### 4. Zero-FOUC Initialization (`app.html`)
 
-To prevent a flash of the wrong theme, put the blocking init script in `<head>` of `src/app.html`,
-before `%sveltekit.head%`:
+A blocking script in `<head>` sets theme and font size before first paint. Don't write it by hand:
 
-```html
-<head>
-  <script>
-    try {
-      const p = localStorage.getItem('fleet-theme');
-      const m = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const t = p === 'dark' || p === 'light' ? p : m ? 'dark' : 'light';
-      document.documentElement.dataset.theme = t;
-      document.documentElement.classList.toggle('dark', t === 'dark');
-      document.documentElement.classList.toggle('light', t === 'light');
-    } catch (e) {}
-  </script>
-  %sveltekit.head%
-</head>
+```bash
+npx web-config sync    # writes or updates the block in src/app.html, before %sveltekit.head%
+npx web-config check   # fails when the block is missing, stale or duplicated by hand; run it in CI
 ```
 
-Or import `initThemeScript` / `getInitThemeScript` programmatically:
-```typescript
-import { initThemeScript } from '@kleinbem/web-config/theme/init';
-```
+`sync` owns everything between the `<!-- web-config:init -->` markers. `defineWebConfig()` also warns
+during `vite dev` / `vite build` when the block has drifted (`initCheck: false` turns that off).
+
+The raw snippets stay available as `initThemeScript` / `getInitThemeScript` from
+`@kleinbem/web-config/theme/init` and `initFontSizeScript` from `@kleinbem/web-config/font-size/init`.
 
 ### 5. Theme Switcher (`<ThemeToggle />`)
 
@@ -133,6 +123,9 @@ theme.cycle();                 // cycles preference
 theme.set('system');           // sets explicit preference
 ```
 
+Importing `theme` (or `fontSize`) is enough to keep `<html>` in sync (`data-theme`, `dark` / `light`
+classes, `data-font-size`): no `$effect` in the app's layout, and no toggle has to be mounted.
+
 ### 6. Font Size Switcher (`<FontSizeToggle />`)
 
 Accessibility typography control supporting proportional `rem` font scaling across the fleet:
@@ -147,16 +140,6 @@ Accessibility typography control supporting proportional `rem` font scaling acro
 
 <!-- Optional segmented control -->
 <FontSizeToggle variant="segmented" showLabel />
-```
-
-Zero-FOUC init script for `src/app.html`:
-```html
-<script>
-  try {
-    const s = localStorage.getItem('fleet-font-size');
-    if (['small', 'large', 'larger'].includes(s)) document.documentElement.dataset.fontSize = s;
-  } catch (e) {}
-</script>
 ```
 
 Or access the reactive font size controller:

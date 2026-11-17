@@ -1,5 +1,22 @@
+import { untrack } from 'svelte';
 import { Persisted } from './persisted.svelte.js';
 import { FONT_SIZE_STORAGE_KEY } from './initFontSize.js';
+
+const SIZE_CLASSES = ['small', 'normal', 'large', 'larger'].map((s) => `font-size-${s}`);
+
+/**
+ * Writes the font size level to the root element: `data-font-size` plus a `font-size-*` class.
+ * @param {'normal' | 'large' | 'larger'} value
+ * @param {HTMLElement} [root]
+ */
+export function applyFontSize(value, root = document.documentElement) {
+	root.dataset.fontSize = value;
+	root.classList.remove(...SIZE_CLASSES);
+	root.classList.add(`font-size-${value}`);
+}
+
+/** Attached controllers; only the last one writes to `<html>`. @type {FontSize[]} */
+let owners = $state.raw([]);
 
 /**
  * Modern font size controller supporting accessibility text scaling and cross-tab sync.
@@ -39,7 +56,7 @@ export class FontSize {
 	 * Cycles font size: normal -> large -> larger -> normal.
 	 */
 	cycle() {
-		const order = ['normal', 'large', 'larger'];
+		const order = /** @type {const} */ (['normal', 'large', 'larger']);
 		const nextIdx = (order.indexOf(this.current) + 1) % order.length;
 		this.current = order[nextIdx];
 	}
@@ -58,9 +75,30 @@ export class FontSize {
 	reset() {
 		this.current = 'normal';
 	}
+
+	/**
+	 * Keeps `<html>` in sync with the font size level. No-op on the server. The controller
+	 * attached last owns `<html>`; stopping it hands back to the one before.
+	 * @returns {() => void} stops the sync
+	 */
+	attach() {
+		if (typeof document === 'undefined') return () => {};
+		untrack(() => (owners = [...owners, this]));
+		const stop = $effect.root(() => {
+			$effect(() => {
+				if (owners.at(-1) === this) applyFontSize(this.current);
+			});
+		});
+		return () => {
+			stop();
+			const i = untrack(() => owners.lastIndexOf(this));
+			if (i >= 0) owners = owners.toSpliced(i, 1);
+		};
+	}
 }
 
 /**
- * Singleton font size controller instance for the fleet.
+ * Singleton font size controller instance for the fleet. Importing it keeps `<html>` in sync.
  */
 export const fontSize = new FontSize();
+fontSize.attach();

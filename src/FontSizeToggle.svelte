@@ -14,13 +14,8 @@
 		...restProps
 	} = $props();
 
-	// Sync active font size to document element
-	$effect(() => {
-		const size = fontSize.current;
-		document.documentElement.dataset.fontSize = size;
-		document.documentElement.classList.remove('font-size-normal', 'font-size-large', 'font-size-larger');
-		document.documentElement.classList.add(`font-size-${size}`);
-	});
+	// While mounted, the toggle's controller owns <html> (matters for a custom `fontSize`).
+	$effect(() => fontSize.attach());
 
 	function handleToggleClick() {
 		fontSize.cycle();
