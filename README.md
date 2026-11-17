@@ -13,14 +13,21 @@ Enforces the fleet standard across all web applications and embedded dashboards 
 
 ## Usage
 
+### 0. Install
+
+```bash
+npm install "git+https://github.com/kleinbem/web-config.git#v0.2.0"
+```
+
+Pin a release tag, not `main` or a commit, so every app names the same version.
+
 ### 1. `vite.config.ts`
 
 ```typescript
 import { defineWebConfig } from '@kleinbem/web-config/vite';
 
-// Embedded daemon SPA (default static adapter with fallback)
+// Static SPA: adapter-static writing to build/ with a 200.html fallback
 export default defineWebConfig({
-  adapter: 'static',
   server: {
     proxy: { '/api': 'http://127.0.0.1:8383' }
   }
@@ -34,6 +41,16 @@ import { defineWebConfig } from '@kleinbem/web-config/vite';
 
 export default defineWebConfig({
   adapter: adapter()
+});
+```
+
+Everything else passes through, so no app has to wrap the result:
+
+```typescript
+export default defineWebConfig({
+  adapterOptions: { pages: 'dist', assets: 'dist' }, // adapter-static options
+  kit: { paths: { base: '/app' } },                  // other SvelteKit options
+  vite: { preview: { port: 4173 } }                  // any other Vite config, merged with mergeConfig
 });
 ```
 
