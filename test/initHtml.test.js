@@ -27,3 +27,18 @@ test('check reports a missing block and a leftover hand-written script', () => {
 test('sync refuses a template without %sveltekit.head%', () => {
 	assert.throws(() => syncInitBlock('<html></html>'));
 });
+
+test('sync handles a placeholder that shares its line with tags', () => {
+	const out = syncInitBlock('<html><head>%sveltekit.head%</head><body>%sveltekit.body%</body></html>');
+	assert.deepEqual(checkInitBlock(out), []);
+	assert.equal(syncInitBlock(out), out);
+	assert.ok(out.includes('-->\n%sveltekit.head%</head>'));
+});
+
+test('CRLF files stay CRLF and count as current', () => {
+	const crlf = page('').replaceAll('\n', '\r\n');
+	const out = syncInitBlock(crlf);
+	assert.ok(!/[^\r]\n/.test(out));
+	assert.deepEqual(checkInitBlock(out), []);
+	assert.equal(syncInitBlock(out), out);
+});

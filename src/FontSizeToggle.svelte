@@ -1,5 +1,5 @@
 <script>
-	import { applyFontSize, fontSize as defaultFontSize } from './fontSize.svelte.js';
+	import { fontSize as defaultFontSize } from './fontSize.svelte.js';
 
 	/**
 	 * @typedef {'button' | 'segmented'} FontSizeVariant
@@ -14,8 +14,8 @@
 		...restProps
 	} = $props();
 
-	// The singleton syncs itself; this covers a custom `fontSize` instance.
-	$effect(() => applyFontSize(fontSize.current));
+	// While mounted, the toggle's controller owns <html> (matters for a custom `fontSize`).
+	$effect(() => fontSize.attach());
 
 	function handleToggleClick() {
 		fontSize.cycle();

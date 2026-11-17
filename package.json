@@ -68,7 +68,7 @@
   "scripts": {
     "check": "npm run check:src && npm run check:fixture",
     "check:src": "svelte-check --workspace src --tsconfig ../tsconfig.json --fail-on-warnings",
-    "check:fixture": "node scripts/install-fixture.js && cd fixture && node ../bin/web-config.js check && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --fail-on-warnings && vite build",
+    "check:fixture": "node scripts/install-fixture.js && cd fixture && node node_modules/@kleinbem/web-config/bin/web-config.js check && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --fail-on-warnings && vite build",
     "test": "node --conditions=browser --import ./test/setup.js --test 'test/*.test.js'"
   },
   "peerDependencies": {

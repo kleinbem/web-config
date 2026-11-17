@@ -10,13 +10,17 @@ import { checkInitBlock } from './initHtml.js';
 // Warns when the theme init block in src/app.html has drifted from the shared one.
 /** @returns {import('vite').Plugin} */
 function initBlockCheck() {
+  let root = '.';
   return {
     name: 'web-config:init-check',
+    configResolved(config) {
+      root = config.root;
+    },
     buildStart() {
-      const file = 'src/app.html';
+      const file = join(root, 'src/app.html');
       if (!existsSync(file)) return;
       for (const problem of checkInitBlock(readFileSync(file, 'utf8'))) {
-        this.warn(`${file}: ${problem} (fix: npx web-config sync)`);
+        this.warn(`src/app.html: ${problem} (fix: npx web-config sync)`);
       }
     }
   };

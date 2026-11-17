@@ -1,12 +1,21 @@
-// Copies the package into fixture/node_modules the way npm installs it for a consumer,
-// so the fixture resolves it through `exports` and `$app/tsconfig` like a real app.
-import { cpSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
+// Installs the package into fixture/node_modules from `npm pack`, so the fixture sees exactly
+// the files a consumer gets and resolves them through `exports` and `$app/tsconfig`.
+import { execFileSync } from 'node:child_process';
+import { mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
-const { files } = JSON.parse(readFileSync('package.json', 'utf8'));
 const target = 'fixture/node_modules/@kleinbem/web-config';
+const tmp = mkdtempSync(join(tmpdir(), 'web-config-pack-'));
 
-rmSync(target, { recursive: true, force: true });
-mkdirSync(target, { recursive: true });
-for (const entry of ['package.json', ...files]) {
-	cpSync(entry, `${target}/${entry}`, { recursive: true });
+try {
+	const tarball = execFileSync('npm', ['pack', '--silent', '--pack-destination', tmp], { encoding: 'utf8' })
+		.trim()
+		.split('\n')
+		.pop();
+	rmSync(target, { recursive: true, force: true });
+	mkdirSync(target, { recursive: true });
+	execFileSync('tar', ['-xzf', join(tmp, String(tarball)), '-C', target, '--strip-components=1']);
+} finally {
+	rmSync(tmp, { recursive: true, force: true });
 }

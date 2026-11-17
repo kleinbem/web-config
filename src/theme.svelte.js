@@ -1,3 +1,4 @@
+import { untrack } from 'svelte';
 import { MediaQuery } from 'svelte/reactivity';
 import { Persisted } from './persisted.svelte.js';
 import { THEME_STORAGE_KEY } from './initTheme.js';
@@ -12,6 +13,9 @@ export function applyTheme(value, root = document.documentElement) {
 	root.classList.toggle('dark', value === 'dark');
 	root.classList.toggle('light', value === 'light');
 }
+
+/** Attached controllers; only the last one writes to `<html>`. @type {Theme[]} */
+let owners = $state.raw([]);
 
 /**
  * Modern theme controller with system preference tracking and localStorage persistence.
@@ -111,14 +115,23 @@ export class Theme {
 	}
 
 	/**
-	 * Keeps `<html>` in sync with the resolved theme. No-op on the server.
+	 * Keeps `<html>` in sync with the resolved theme. No-op on the server. The controller
+	 * attached last owns `<html>`; stopping it hands back to the one before.
 	 * @returns {() => void} stops the sync
 	 */
 	attach() {
 		if (typeof document === 'undefined') return () => {};
-		return $effect.root(() => {
-			$effect(() => applyTheme(this.current));
+		untrack(() => (owners = [...owners, this]));
+		const stop = $effect.root(() => {
+			$effect(() => {
+				if (owners.at(-1) === this) applyTheme(this.current);
+			});
 		});
+		return () => {
+			stop();
+			const i = untrack(() => owners.lastIndexOf(this));
+			if (i >= 0) owners = owners.toSpliced(i, 1);
+		};
 	}
 }
 

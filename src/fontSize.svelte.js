@@ -1,3 +1,4 @@
+import { untrack } from 'svelte';
 import { Persisted } from './persisted.svelte.js';
 import { FONT_SIZE_STORAGE_KEY } from './initFontSize.js';
 
@@ -13,6 +14,9 @@ export function applyFontSize(value, root = document.documentElement) {
 	root.classList.remove(...SIZE_CLASSES);
 	root.classList.add(`font-size-${value}`);
 }
+
+/** Attached controllers; only the last one writes to `<html>`. @type {FontSize[]} */
+let owners = $state.raw([]);
 
 /**
  * Modern font size controller supporting accessibility text scaling and cross-tab sync.
@@ -73,14 +77,23 @@ export class FontSize {
 	}
 
 	/**
-	 * Keeps `<html>` in sync with the font size level. No-op on the server.
+	 * Keeps `<html>` in sync with the font size level. No-op on the server. The controller
+	 * attached last owns `<html>`; stopping it hands back to the one before.
 	 * @returns {() => void} stops the sync
 	 */
 	attach() {
 		if (typeof document === 'undefined') return () => {};
-		return $effect.root(() => {
-			$effect(() => applyFontSize(this.current));
+		untrack(() => (owners = [...owners, this]));
+		const stop = $effect.root(() => {
+			$effect(() => {
+				if (owners.at(-1) === this) applyFontSize(this.current);
+			});
 		});
+		return () => {
+			stop();
+			const i = untrack(() => owners.lastIndexOf(this));
+			if (i >= 0) owners = owners.toSpliced(i, 1);
+		};
 	}
 }
 

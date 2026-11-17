@@ -1,5 +1,5 @@
 <script>
-	import { applyTheme, theme as defaultTheme } from './theme.svelte.js';
+	import { theme as defaultTheme } from './theme.svelte.js';
 
 	/**
 	 * @typedef {'button' | 'cycle' | 'segmented'} ToggleVariant
@@ -14,8 +14,8 @@
 		...restProps
 	} = $props();
 
-	// The singleton syncs itself; this covers a custom `theme` instance.
-	$effect(() => applyTheme(theme.current));
+	// While mounted, the toggle's controller owns <html> (matters for a custom `theme`).
+	$effect(() => theme.attach());
 
 	function handleToggleClick() {
 		if (variant === 'cycle') {
