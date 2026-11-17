@@ -136,7 +136,7 @@
 
 {#if open}
 	<div
-		class="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-28 px-4 bg-zinc-950/60 backdrop-blur-xs transition-opacity animate-in fade-in duration-150 {className}"
+		class="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-28 px-4 bg-black/60 backdrop-blur-xs {className}"
 		role="dialog"
 		tabindex="-1"
 		aria-modal="true"
@@ -150,10 +150,10 @@
 		{...restProps}
 	>
 		<div
-			class="w-full max-w-xl rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl overflow-hidden flex flex-col max-h-[75vh]"
+			class="w-full max-w-xl rounded-2xl border border-line bg-surface shadow-2xl overflow-hidden flex flex-col max-h-[75vh]"
 		>
-			<div class="flex items-center px-4 border-b border-zinc-200/80 dark:border-zinc-800/80">
-				<svg class="w-4 h-4 text-zinc-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<div class="flex items-center px-4 border-b border-line">
+				<svg class="w-4 h-4 text-muted shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
 				</svg>
 				<input
@@ -167,9 +167,9 @@
 					aria-autocomplete="list"
 					aria-activedescendant={selectedIndex < filtered.length ? optionId(selectedIndex) : undefined}
 					{placeholder}
-					class="w-full py-3.5 px-3 text-sm bg-transparent outline-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400"
+					class="w-full py-3.5 px-3 text-sm bg-transparent outline-none text-heading placeholder:text-muted"
 				/>
-				<kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border border-zinc-200 dark:border-zinc-700">
+				<kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono rounded bg-surface-high text-muted border border-line">
 					ESC
 				</kbd>
 			</div>
@@ -182,7 +182,7 @@
 				class="overflow-y-auto p-2 divide-y divide-transparent"
 			>
 				{#if filtered.length === 0}
-					<div class="py-12 text-center text-sm text-zinc-500">
+					<div class="py-12 text-center text-sm text-muted">
 						{emptyText}
 					</div>
 				{:else}
@@ -197,8 +197,8 @@
 							onmouseenter={() => (selectedIndex = index)}
 							onclick={() => selectItem(item)}
 							class="w-full text-left flex items-center justify-between p-2.5 rounded-xl text-sm transition-colors cursor-pointer {isSelected
-								? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100'
-								: 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800/50'}"
+								? 'bg-surface-high text-heading'
+								: 'text-fg hover:bg-surface-high/50'}"
 						>
 							<div class="flex items-center gap-3 min-w-0">
 								{#if item.icon}
@@ -206,30 +206,30 @@
 								{/if}
 								<div class="truncate">
 									<div class="flex items-center gap-2">
-										<span class="font-medium text-zinc-900 dark:text-zinc-100">{item.title}</span>
+										<span class="font-medium text-heading">{item.title}</span>
 										{#if item.category}
-											<span class="text-[10px] px-1.5 py-0.5 rounded bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-400 font-mono">
+											<span class="text-[10px] px-1.5 py-0.5 rounded bg-surface-high text-muted border border-line font-mono">
 												{item.category}
 											</span>
 										{/if}
 										{#if item.badge}
-											<span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-mono">
+											<span class="text-[10px] px-1.5 py-0.5 rounded bg-status-warning-soft text-status-warning font-mono">
 												{item.badge}
 											</span>
 										{/if}
 									</div>
 									{#if item.subtitle}
-										<p class="text-xs text-zinc-500 truncate mt-0.5">{item.subtitle}</p>
+										<p class="text-xs text-muted truncate mt-0.5">{item.subtitle}</p>
 									{/if}
 								</div>
 							</div>
 
 							<div class="flex items-center gap-2 shrink-0 ml-3">
 								{#if item.meta}
-									<span class="text-[11px] font-mono text-zinc-400">{item.meta}</span>
+									<span class="text-[11px] font-mono text-muted">{item.meta}</span>
 								{/if}
 								{#if isSelected}
-									<span class="text-[11px] text-zinc-400 font-mono">↵ select</span>
+									<span class="text-[11px] text-muted font-mono">↵ select</span>
 								{/if}
 							</div>
 						</button>
@@ -237,7 +237,7 @@
 				{/if}
 			</div>
 
-			<div class="px-4 py-2 bg-zinc-50 dark:bg-zinc-950/40 border-t border-zinc-200/60 dark:border-zinc-800/60 flex items-center justify-between text-[11px] text-zinc-500 font-mono">
+			<div class="px-4 py-2 bg-bg/40 border-t border-line flex items-center justify-between text-[11px] text-muted font-mono">
 				<span>↑↓ to navigate</span>
 				<span>↵ to select</span>
 				<span>{filtered.length} results</span>

@@ -88,8 +88,8 @@ the shared one they would point into `node_modules`.
 @import "@kleinbem/web-config/badges.css";
 @import "@kleinbem/web-config/prose.css";
 
-/* Make dark: follow the active theme (data-theme set by the init script / ThemeToggle),
-   not only the OS setting. CommandPalette relies on it. */
+/* Only if the app uses dark: itself: make it follow the active theme (data-theme set by the
+   init script / ThemeToggle), not only the OS setting. The shared components don't need it. */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
 ```
 

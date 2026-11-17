@@ -1,6 +1,6 @@
 {
   "name": "@kleinbem/web-config",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Shared cutting-edge SvelteKit, Vite, and Tailwind configuration for the kleinbem fleet",
   "type": "module",
   "main": "./src/index.js",
