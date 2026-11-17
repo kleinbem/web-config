@@ -1,10 +1,10 @@
 import type { Component } from 'svelte';
-import type { HTMLAttributes } from 'svelte/elements';
+import type { HTMLButtonAttributes } from 'svelte/elements';
 import type { FontSize } from './fontSize.svelte.js';
 
 export type FontSizeVariant = 'button' | 'segmented';
 
-export interface FontSizeToggleProps extends Omit<HTMLAttributes<HTMLElement>, 'class'> {
+export interface FontSizeToggleProps extends Omit<HTMLButtonAttributes, 'class'> {
 	variant?: FontSizeVariant;
 	showLabel?: boolean;
 	class?: string;

@@ -18,7 +18,7 @@
 <main class="prose p-6">
 	<h2>Fixture</h2>
 	<p>Theme {theme.current} ({theme.preference}), font size {fontSize.current}.</p>
-	<ThemeToggle />
+	<ThemeToggle disabled={false} />
 	<ThemeToggle variant="cycle" showLabel />
 	<ThemeToggle variant="segmented" showLabel />
 	<FontSizeToggle />

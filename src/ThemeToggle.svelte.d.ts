@@ -1,10 +1,10 @@
 import type { Component } from 'svelte';
-import type { HTMLAttributes } from 'svelte/elements';
+import type { HTMLButtonAttributes } from 'svelte/elements';
 import type { Theme } from './theme.svelte.js';
 
 export type ToggleVariant = 'button' | 'cycle' | 'segmented';
 
-export interface ThemeToggleProps extends Omit<HTMLAttributes<HTMLElement>, 'class'> {
+export interface ThemeToggleProps extends Omit<HTMLButtonAttributes, 'class'> {
 	variant?: ToggleVariant;
 	showLabel?: boolean;
 	class?: string;
