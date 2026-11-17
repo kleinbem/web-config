@@ -44,13 +44,13 @@
 	const colorClass = $derived.by(() => {
 		switch (status) {
 			case 'healthy':
-				return 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]';
+				return 'bg-status-success shadow-[0_0_8px_color-mix(in_srgb,var(--color-status-success)_50%,transparent)]';
 			case 'degraded':
-				return 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]';
+				return 'bg-status-warning shadow-[0_0_8px_color-mix(in_srgb,var(--color-status-warning)_50%,transparent)]';
 			case 'down':
-				return 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]';
+				return 'bg-status-danger shadow-[0_0_8px_color-mix(in_srgb,var(--color-status-danger)_50%,transparent)]';
 			case 'checking':
-				return 'bg-sky-500 shadow-[0_0_8px_rgba(14,165,233,0.5)] motion-safe:animate-pulse';
+				return 'bg-status-info shadow-[0_0_8px_color-mix(in_srgb,var(--color-status-info)_50%,transparent)] motion-safe:animate-pulse';
 			default:
 				return 'bg-muted/60';
 		}
