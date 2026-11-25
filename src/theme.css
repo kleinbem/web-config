@@ -2,6 +2,14 @@
   --font-sans: "Roboto", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
+  /* Elevation Shadows */
+  --shadow-elevation-1: 0 1px 2px 0 rgb(0 0 0 / 0.3), 0 1px 3px 1px rgb(0 0 0 / 0.15);
+  --shadow-elevation-2: 0 1px 2px 0 rgb(0 0 0 / 0.3), 0 2px 6px 2px rgb(0 0 0 / 0.15);
+  --shadow-elevation-3: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 4px 8px 3px rgb(0 0 0 / 0.15);
+}
+
+/* inline resolves var(--color-*) at utility usage instead of emitting a self-referential :root cycle */
+@theme inline {
   /* Semantic surface & text colors mapped to active theme variables */
   --color-bg: var(--color-bg);
   --color-surface: var(--color-surface);
@@ -39,134 +47,68 @@
   --color-status-ai: var(--color-status-ai);
   --color-status-ai-soft: var(--color-status-ai-soft);
   --color-status-ai-border: var(--color-status-ai-border);
-
-  /* Elevation Shadows */
-  --shadow-elevation-1: 0 1px 2px 0 rgb(0 0 0 / 0.3), 0 1px 3px 1px rgb(0 0 0 / 0.15);
-  --shadow-elevation-2: 0 1px 2px 0 rgb(0 0 0 / 0.3), 0 2px 6px 2px rgb(0 0 0 / 0.15);
-  --shadow-elevation-3: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 4px 8px 3px rgb(0 0 0 / 0.15);
 }
 
-/* Default to dark theme tokens; switchable via data-theme attribute or prefers-color-scheme */
+/* Each token is defined once as light-dark(light, dark); the active side follows color-scheme.
+   Declared on [data-theme] too, so a themed subtree resolves them itself. */
 :root,
-[data-theme="dark"] {
+[data-theme] {
+  /* Surfaces and text */
+  --color-bg: light-dark(#f9f9ff, #0b0f14);
+  --color-surface: light-dark(#f3f3fa, #151a21);
+  --color-surface-high: light-dark(#ededf4, #1c222b);
+  --color-line: light-dark(#c4c6d0, rgba(255, 255, 255, 0.08));
+  --color-outline: light-dark(#74777f, rgba(255, 255, 255, 0.16));
+  --color-heading: light-dark(#1a1b20, #f0f6fc);
+  --color-fg: light-dark(#44474f, #c9d1d9);
+  --color-muted: light-dark(#6b6e76, #8b949e);
+
+  /* Brand / accent */
+  --color-accent: light-dark(#435e91, #1f6feb);
+  --color-accent-hover: light-dark(color-mix(in srgb, #435e91 85%, black), #1158c7);
+  --color-accent-fg: light-dark(#ffffff, #ffffff);
+  --color-accent-soft: light-dark(#d8e2ff, rgba(56, 139, 253, 0.15));
+  --color-accent-soft-fg: light-dark(#2a4678, #79c0ff);
+
+  /* Status */
+  --color-status-success: light-dark(#047857, #34d399);
+  --color-status-success-soft: light-dark(#ecfdf5, rgba(6, 78, 59, 0.4));
+  --color-status-success-border: light-dark(#a7f3d0, rgba(6, 95, 70, 0.6));
+  --color-status-warning: light-dark(#b45309, #fbbf24);
+  --color-status-warning-soft: light-dark(#fffbeb, rgba(120, 53, 15, 0.4));
+  --color-status-warning-border: light-dark(#fde68a, rgba(146, 64, 14, 0.6));
+  --color-status-danger: light-dark(#be123c, #f87171);
+  --color-status-danger-soft: light-dark(#fff1f2, rgba(136, 19, 55, 0.4));
+  --color-status-danger-border: light-dark(#fecdd3, rgba(159, 18, 57, 0.6));
+  --color-status-info: light-dark(#0369a1, #38bdf8);
+  --color-status-info-soft: light-dark(#f0f9ff, rgba(12, 74, 110, 0.4));
+  --color-status-info-border: light-dark(#bae6fd, rgba(3, 105, 161, 0.6));
+  --color-status-ai: light-dark(#7e22ce, #c084fc);
+  --color-status-ai-soft: light-dark(#faf5ff, rgba(88, 28, 135, 0.4));
+  --color-status-ai-border: light-dark(#e9d5ff, rgba(107, 33, 168, 0.6));
+}
+
+/* Dark unless the OS asks for light; data-theme (init script / ThemeToggle) overrides both. */
+:root {
   color-scheme: dark;
-  color: var(--color-fg);
-  background-color: var(--color-bg);
-  --color-bg: #0b0f14;
-  --color-surface: #151a21;
-  --color-surface-high: #1c222b;
-  --color-line: rgba(255, 255, 255, 0.08);
-  --color-outline: rgba(255, 255, 255, 0.16);
-  --color-heading: #f0f6fc;
-  --color-fg: #c9d1d9;
-  --color-muted: #8b949e;
-
-  --color-accent: #1f6feb;
-  --color-accent-hover: #1158c7;
-  --color-accent-fg: #ffffff;
-  --color-accent-soft: rgba(56, 139, 253, 0.15);
-  --color-accent-soft-fg: #79c0ff;
-
-  --color-status-success: #34d399;
-  --color-status-success-soft: rgba(6, 78, 59, 0.4);
-  --color-status-success-border: rgba(6, 95, 70, 0.6);
-
-  --color-status-warning: #fbbf24;
-  --color-status-warning-soft: rgba(120, 53, 15, 0.4);
-  --color-status-warning-border: rgba(146, 64, 14, 0.6);
-
-  --color-status-danger: #f87171;
-  --color-status-danger-soft: rgba(136, 19, 55, 0.4);
-  --color-status-danger-border: rgba(159, 18, 57, 0.6);
-
-  --color-status-info: #38bdf8;
-  --color-status-info-soft: rgba(12, 74, 110, 0.4);
-  --color-status-info-border: rgba(3, 105, 161, 0.6);
-
-  --color-status-ai: #c084fc;
-  --color-status-ai-soft: rgba(88, 28, 135, 0.4);
-  --color-status-ai-border: rgba(107, 33, 168, 0.6);
 }
 
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
     color-scheme: light;
-    color: var(--color-fg);
-    background-color: var(--color-bg);
-    --color-bg: #f9f9ff;
-    --color-surface: #f3f3fa;
-    --color-surface-high: #ededf4;
-    --color-line: #c4c6d0;
-    --color-outline: #74777f;
-    --color-heading: #1a1b20;
-    --color-fg: #44474f;
-    --color-muted: #6b6e76;
-
-    --color-accent: #435e91;
-    --color-accent-hover: color-mix(in srgb, #435e91 85%, black);
-    --color-accent-fg: #ffffff;
-    --color-accent-soft: #d8e2ff;
-    --color-accent-soft-fg: #2a4678;
-
-    --color-status-success: #047857;
-    --color-status-success-soft: #ecfdf5;
-    --color-status-success-border: #a7f3d0;
-
-    --color-status-warning: #b45309;
-    --color-status-warning-soft: #fffbeb;
-    --color-status-warning-border: #fde68a;
-
-    --color-status-danger: #be123c;
-    --color-status-danger-soft: #fff1f2;
-    --color-status-danger-border: #fecdd3;
-
-    --color-status-info: #0369a1;
-    --color-status-info-soft: #f0f9ff;
-    --color-status-info-border: #bae6fd;
-
-    --color-status-ai: #7e22ce;
-    --color-status-ai-soft: #faf5ff;
-    --color-status-ai-border: #e9d5ff;
   }
 }
 
-:root[data-theme="light"],
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
 [data-theme="light"] {
   color-scheme: light;
+}
+
+:root,
+[data-theme] {
   color: var(--color-fg);
   background-color: var(--color-bg);
-  --color-bg: #f9f9ff;
-  --color-surface: #f3f3fa;
-  --color-surface-high: #ededf4;
-  --color-line: #c4c6d0;
-  --color-outline: #74777f;
-  --color-heading: #1a1b20;
-  --color-fg: #44474f;
-  --color-muted: #6b6e76;
-
-  --color-accent: #435e91;
-  --color-accent-hover: color-mix(in srgb, #435e91 85%, black);
-  --color-accent-fg: #ffffff;
-  --color-accent-soft: #d8e2ff;
-  --color-accent-soft-fg: #2a4678;
-
-  --color-status-success: #047857;
-  --color-status-success-soft: #ecfdf5;
-  --color-status-success-border: #a7f3d0;
-
-  --color-status-warning: #b45309;
-  --color-status-warning-soft: #fffbeb;
-  --color-status-warning-border: #fde68a;
-
-  --color-status-danger: #be123c;
-  --color-status-danger-soft: #fff1f2;
-  --color-status-danger-border: #fecdd3;
-
-  --color-status-info: #0369a1;
-  --color-status-info-soft: #f0f9ff;
-  --color-status-info-border: #bae6fd;
-
-  --color-status-ai: #7e22ce;
-  --color-status-ai-soft: #faf5ff;
-  --color-status-ai-border: #e9d5ff;
 }

@@ -14,13 +14,8 @@
 		...restProps
 	} = $props();
 
-	// Sync active theme to DOM document element on change
-	$effect(() => {
-		const active = theme.current;
-		document.documentElement.dataset.theme = active;
-		document.documentElement.classList.toggle('dark', active === 'dark');
-		document.documentElement.classList.toggle('light', active === 'light');
-	});
+	// While mounted, the toggle's controller owns <html> (matters for a custom `theme`).
+	$effect(() => theme.attach());
 
 	function handleToggleClick() {
 		if (variant === 'cycle') {
