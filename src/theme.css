@@ -1,0 +1,172 @@
+@theme {
+  --font-sans: "Roboto", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Semantic surface & text colors mapped to active theme variables */
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-surface-high: var(--color-surface-high);
+  --color-line: var(--color-line);
+  --color-outline: var(--color-outline);
+  --color-heading: var(--color-heading);
+  --color-fg: var(--color-fg);
+  --color-muted: var(--color-muted);
+
+  /* Brand / Accent */
+  --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-fg: var(--color-accent-fg);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-accent-soft-fg: var(--color-accent-soft-fg);
+
+  /* Status Colors */
+  --color-status-success: var(--color-status-success);
+  --color-status-success-soft: var(--color-status-success-soft);
+  --color-status-success-border: var(--color-status-success-border);
+
+  --color-status-warning: var(--color-status-warning);
+  --color-status-warning-soft: var(--color-status-warning-soft);
+  --color-status-warning-border: var(--color-status-warning-border);
+
+  --color-status-danger: var(--color-status-danger);
+  --color-status-danger-soft: var(--color-status-danger-soft);
+  --color-status-danger-border: var(--color-status-danger-border);
+
+  --color-status-info: var(--color-status-info);
+  --color-status-info-soft: var(--color-status-info-soft);
+  --color-status-info-border: var(--color-status-info-border);
+
+  --color-status-ai: var(--color-status-ai);
+  --color-status-ai-soft: var(--color-status-ai-soft);
+  --color-status-ai-border: var(--color-status-ai-border);
+
+  /* Elevation Shadows */
+  --shadow-elevation-1: 0 1px 2px 0 rgb(0 0 0 / 0.3), 0 1px 3px 1px rgb(0 0 0 / 0.15);
+  --shadow-elevation-2: 0 1px 2px 0 rgb(0 0 0 / 0.3), 0 2px 6px 2px rgb(0 0 0 / 0.15);
+  --shadow-elevation-3: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 4px 8px 3px rgb(0 0 0 / 0.15);
+}
+
+/* Default to dark theme tokens; switchable via data-theme attribute or prefers-color-scheme */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  color: var(--color-fg);
+  background-color: var(--color-bg);
+  --color-bg: #0b0f14;
+  --color-surface: #151a21;
+  --color-surface-high: #1c222b;
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-outline: rgba(255, 255, 255, 0.16);
+  --color-heading: #f0f6fc;
+  --color-fg: #c9d1d9;
+  --color-muted: #8b949e;
+
+  --color-accent: #1f6feb;
+  --color-accent-hover: #1158c7;
+  --color-accent-fg: #ffffff;
+  --color-accent-soft: rgba(56, 139, 253, 0.15);
+  --color-accent-soft-fg: #79c0ff;
+
+  --color-status-success: #34d399;
+  --color-status-success-soft: rgba(6, 78, 59, 0.4);
+  --color-status-success-border: rgba(6, 95, 70, 0.6);
+
+  --color-status-warning: #fbbf24;
+  --color-status-warning-soft: rgba(120, 53, 15, 0.4);
+  --color-status-warning-border: rgba(146, 64, 14, 0.6);
+
+  --color-status-danger: #f87171;
+  --color-status-danger-soft: rgba(136, 19, 55, 0.4);
+  --color-status-danger-border: rgba(159, 18, 57, 0.6);
+
+  --color-status-info: #38bdf8;
+  --color-status-info-soft: rgba(12, 74, 110, 0.4);
+  --color-status-info-border: rgba(3, 105, 161, 0.6);
+
+  --color-status-ai: #c084fc;
+  --color-status-ai-soft: rgba(88, 28, 135, 0.4);
+  --color-status-ai-border: rgba(107, 33, 168, 0.6);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    color: var(--color-fg);
+    background-color: var(--color-bg);
+    --color-bg: #f9f9ff;
+    --color-surface: #f3f3fa;
+    --color-surface-high: #ededf4;
+    --color-line: #c4c6d0;
+    --color-outline: #74777f;
+    --color-heading: #1a1b20;
+    --color-fg: #44474f;
+    --color-muted: #6b6e76;
+
+    --color-accent: #435e91;
+    --color-accent-hover: color-mix(in srgb, #435e91 85%, black);
+    --color-accent-fg: #ffffff;
+    --color-accent-soft: #d8e2ff;
+    --color-accent-soft-fg: #2a4678;
+
+    --color-status-success: #047857;
+    --color-status-success-soft: #ecfdf5;
+    --color-status-success-border: #a7f3d0;
+
+    --color-status-warning: #b45309;
+    --color-status-warning-soft: #fffbeb;
+    --color-status-warning-border: #fde68a;
+
+    --color-status-danger: #be123c;
+    --color-status-danger-soft: #fff1f2;
+    --color-status-danger-border: #fecdd3;
+
+    --color-status-info: #0369a1;
+    --color-status-info-soft: #f0f9ff;
+    --color-status-info-border: #bae6fd;
+
+    --color-status-ai: #7e22ce;
+    --color-status-ai-soft: #faf5ff;
+    --color-status-ai-border: #e9d5ff;
+  }
+}
+
+:root[data-theme="light"],
+[data-theme="light"] {
+  color-scheme: light;
+  color: var(--color-fg);
+  background-color: var(--color-bg);
+  --color-bg: #f9f9ff;
+  --color-surface: #f3f3fa;
+  --color-surface-high: #ededf4;
+  --color-line: #c4c6d0;
+  --color-outline: #74777f;
+  --color-heading: #1a1b20;
+  --color-fg: #44474f;
+  --color-muted: #6b6e76;
+
+  --color-accent: #435e91;
+  --color-accent-hover: color-mix(in srgb, #435e91 85%, black);
+  --color-accent-fg: #ffffff;
+  --color-accent-soft: #d8e2ff;
+  --color-accent-soft-fg: #2a4678;
+
+  --color-status-success: #047857;
+  --color-status-success-soft: #ecfdf5;
+  --color-status-success-border: #a7f3d0;
+
+  --color-status-warning: #b45309;
+  --color-status-warning-soft: #fffbeb;
+  --color-status-warning-border: #fde68a;
+
+  --color-status-danger: #be123c;
+  --color-status-danger-soft: #fff1f2;
+  --color-status-danger-border: #fecdd3;
+
+  --color-status-info: #0369a1;
+  --color-status-info-soft: #f0f9ff;
+  --color-status-info-border: #bae6fd;
+
+  --color-status-ai: #7e22ce;
+  --color-status-ai-soft: #faf5ff;
+  --color-status-ai-border: #e9d5ff;
+}

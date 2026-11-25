@@ -1,0 +1,43 @@
+@import "./theme.css";
+
+:root,
+:root[data-theme],
+[data-theme] {
+  color-scheme: light !important;
+  color: var(--color-fg);
+  background-color: var(--color-bg);
+  --color-bg: #f9f9ff;
+  --color-surface: #f3f3fa;
+  --color-surface-high: #ededf4;
+  --color-line: #c4c6d0;
+  --color-outline: #74777f;
+  --color-heading: #1a1b20;
+  --color-fg: #44474f;
+  --color-muted: #6b6e76;
+
+  --color-accent: #435e91;
+  --color-accent-hover: color-mix(in srgb, #435e91 85%, black);
+  --color-accent-fg: #ffffff;
+  --color-accent-soft: #d8e2ff;
+  --color-accent-soft-fg: #2a4678;
+
+  --color-status-success: #047857;
+  --color-status-success-soft: #ecfdf5;
+  --color-status-success-border: #a7f3d0;
+
+  --color-status-warning: #b45309;
+  --color-status-warning-soft: #fffbeb;
+  --color-status-warning-border: #fde68a;
+
+  --color-status-danger: #be123c;
+  --color-status-danger-soft: #fff1f2;
+  --color-status-danger-border: #fecdd3;
+
+  --color-status-info: #0369a1;
+  --color-status-info-soft: #f0f9ff;
+  --color-status-info-border: #bae6fd;
+
+  --color-status-ai: #7e22ce;
+  --color-status-ai-soft: #faf5ff;
+  --color-status-ai-border: #e9d5ff;
+}

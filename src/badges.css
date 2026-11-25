@@ -1,0 +1,55 @@
+/* Status badge and pill utility classes */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1rem;
+  font-family: var(--font-mono);
+  border-width: 1px;
+  border-style: solid;
+}
+
+.badge-emerald,
+.badge-success {
+  color: var(--color-status-success);
+  background-color: var(--color-status-success-soft);
+  border-color: var(--color-status-success-border);
+}
+
+.badge-amber,
+.badge-warning {
+  color: var(--color-status-warning);
+  background-color: var(--color-status-warning-soft);
+  border-color: var(--color-status-warning-border);
+}
+
+.badge-rose,
+.badge-danger {
+  color: var(--color-status-danger);
+  background-color: var(--color-status-danger-soft);
+  border-color: var(--color-status-danger-border);
+}
+
+.badge-sky,
+.badge-info {
+  color: var(--color-status-info);
+  background-color: var(--color-status-info-soft);
+  border-color: var(--color-status-info-border);
+}
+
+.badge-purple,
+.badge-ai {
+  color: var(--color-status-ai);
+  background-color: var(--color-status-ai-soft);
+  border-color: var(--color-status-ai-border);
+}
+
+.badge-muted {
+  color: var(--color-muted);
+  background-color: var(--color-surface);
+  border-color: var(--color-line);
+}
